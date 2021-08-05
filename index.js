@@ -22,6 +22,7 @@ const fs = require('fs');
 
 client.on('ready', () => {
   console.log('READY: ${client.user.tag}');
+  client.channels.cache.get("872623208988303400").send(String("test"));
 });
 
 client.login(process.env.token);
@@ -33,9 +34,21 @@ app.get("/", function (req, res) {
 app.post("/post-creation", function (req, res) {
   const data_uri = req.body.uri;
 
-  client.on("message", message => {
-    client.channels.cache.get("872623208988303400").send(String(data_uri));
-  });
+  if (data_uri === "" || data_uri === null || data_uri === undefined) {
+    res.send("Error: Cannot send a blank URI!");
+  }
+
+  else {
+    if (data_uri.includes("data")) {
+      client.channels.cache.get("872623208988303400").send(String(data_uri));
+
+      res.send("Uploaded Orb.");
+    }
+
+    else {
+      res.send("Error: String is not data URI!");
+    }
+  }
 });
 
 keepAlive();
