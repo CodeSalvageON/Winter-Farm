@@ -7,6 +7,7 @@ const express = require('express');
 const app = require('express')();
 const http = require('http').Server(app);
 const bodyParser = require('body-parser');
+const lz_string = require('lz-string');
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -40,7 +41,7 @@ app.post("/post-creation", function (req, res) {
 
   else {
     if (data_uri.includes("data")) {
-      client.channels.cache.get("872623208988303400").send(String(data_uri));
+      client.channels.cache.get("872623208988303400").send(String(lz_string.compress(data_uri)));
 
       res.send("Uploaded Orb.");
     }
