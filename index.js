@@ -30,6 +30,12 @@ app.get("/", function (req, res) {
   res.send("");
 });
 
-app.post("/");
+app.post("/post-creation", function (req, res) {
+  const data_uri = req.body.uri;
+
+  client.on("message", message => {
+    client.channels.cache.get("872623208988303400").send(String(data_uri));
+  });
+});
 
 keepAlive();
