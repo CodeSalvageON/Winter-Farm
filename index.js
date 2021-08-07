@@ -23,7 +23,6 @@ const fs = require('fs');
 
 client.on('ready', () => {
   console.log('READY: ${client.user.tag}');
-  client.channels.cache.get("872623208988303400").send(String("test"));
 });
 
 client.login(process.env.token);
@@ -32,8 +31,39 @@ app.get("/", function (req, res) {
   res.send("");
 });
 
+app.get("/get-creations", function (req, res) {
+  const channel = client.channels.cache.get("872623208988303400");
+
+  channel.messages.fetch({ limit: 100 }).then(messages => {
+    console.log(`Received ${messages.size} creations`);
+
+    let creations_array = [];
+
+    messages.forEach(message => {
+      const decompressed_string = lz_string.decompress(message.content);
+
+      creations_array.unshift(message.content);
+    });
+
+    res.send(JSON.stringify(creations_array));
+  });
+});
+
+app.get("/upload", function (req, res) {
+  const file_path = __dirname + "/public/static/upload.html";
+
+  res.sendFile(file_path);
+});
+
+app.get("/browse", function (req, res) {
+  const file_path = __dirname + "/public/static/browse.html";
+
+  res.sendFile(file_path);
+});
+
 app.post("/post-creation", function (req, res) {
   const data_uri = req.body.uri;
+  console.log("Recieved data.");
 
   if (data_uri === "" || data_uri === null || data_uri === undefined) {
     res.send("Error: Cannot send a blank URI!");

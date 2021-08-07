@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Upload in progress</title>
+  </head>
+  <body>
+    <script src="https://codesalvageon.github.io/magichat/scripts/jquery.js"></script>
+    <script>
+      const url_string = window.location.href;
+      const url = new URL(url_string);
+
+      const title = url.searchParams.get("title");
+
+      const uri = url.searchParams.get("url");
+
+      fetch ("/post-creation", {
+        method : "POST",
+        headers : {
+          "Content-Type" : "application/json"
+        },
+        body : JSON.stringify({
+          uri : uri 
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        window.close();
+      })
+      .catch(error => {
+        throw error;
+      });
+    </script>
+  </body>
+</html>
