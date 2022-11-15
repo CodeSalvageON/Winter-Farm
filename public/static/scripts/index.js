@@ -36,3 +36,73 @@ waitForElement("body", 3000).then(function () {
 }).catch(() => {
   console.log("Error: did not load!");
 });
+
+// Buttons
+
+const createBtn = document.getElementById("create");
+const browseBtn = document.getElementById("browse");
+
+const returnCreate = document.getElementById("rcreate");
+const returnBrowse = document.getElementById("rbrowse");
+
+let checkDisable = 0;
+
+createBtn.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+  
+  $("#info").slideUp();
+  $("#wiki-create").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+returnCreate.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+  
+  $("#wiki-create").slideUp();
+  $("#info").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+browseBtn.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+  
+  $("#info").slideUp();
+  $("#wiki-browse").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+returnBrowse.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+  
+  $("#wiki-browse").slideUp();
+  $("#info").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
