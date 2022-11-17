@@ -45,6 +45,13 @@ const browseBtn = document.getElementById("browse");
 const returnCreate = document.getElementById("rcreate");
 const returnBrowse = document.getElementById("rbrowse");
 
+// Forms
+
+const creationForm = document.getElementById("creation-form");
+const wikiNameCreation = document.getElementById("wiki-name-creation");
+const wikiBgCreation = document.getElementById("wiki-bg-creation");
+const wikiColorCreation = document.getElementById("wiki-color-creation");
+
 let checkDisable = 0;
 
 createBtn.onclick = function () {
@@ -105,4 +112,12 @@ returnBrowse.onclick = function () {
   setTimeout(function () {
     checkDisable = 0;
   }, 500);
+}
+
+// Form submissions
+
+creationForm.onsubmit = function () {
+  event.preventDefault();
+
+  
 }

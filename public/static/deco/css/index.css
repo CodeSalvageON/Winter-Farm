@@ -37,6 +37,21 @@ hr {
   border: 1px solid #747a86;
 }
 
+input, select {
+  color: black;
+  border-radius: 3px;
+  box-shadow: 5px 10px 18px black;
+  padding: 5px;
+  background-color: #8e8099;
+  font-family: ROMANSEX;
+  border: hidden;
+  outline: none;
+}
+
+select {
+  width: 40%;
+}
+
 .center {
   margin: auto;
   text-align: center;

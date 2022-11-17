@@ -18,6 +18,27 @@ app.get('', function (req, res) {
   res.sendFile(index);
 });
 
+app.post('/wiki-create', function (req, res) {
+  const name = req.body.name;
+  let pub = req.body.pub;
+  const bg = req.body.bg;
+  const color = req.body.color;
+
+  if (name === null || name === undefined || name === "") {
+    res.send("null");
+  }
+
+  else if (name.length > 100) {
+    res.send("long");
+  }
+
+  else {
+    if (pub === null || pub === undefined || pub === "") {
+      pub = "public";
+    }
+  }
+});
+
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
