@@ -52,8 +52,32 @@
         Return
       </section>
       <hr/>
-      <form>
-        
+      <form id="creation-form" class="header">
+        <p>
+          Wiki Name: <input id="wiki-name-creation" required maxlength="100" class="header"/>
+        </p>
+        <i>The name of the wiki you're creating.</i>
+        <p>
+          Publicity: <select id="wiki-publicity-creation" required class="header">
+            <option value="public">
+              Public
+            </option>
+            <option value="private">
+              Private
+            </option>
+          </select>
+        </p>
+        <i>Public wikis are listed on the registry.</i>
+        <p>
+          Wiki Background Image URL (Optional): <input type="url" id="wiki-bg-creation" class="header"> 
+        </p>
+        <i>A high quality, large image works best.</i>
+        <p>
+          Wiki Background Color (Optional): <input type="color" id="wiki-color-creation" class="header">
+        </p>
+        <section class="op-btn" id="wiki-submit">
+          Finish
+        </section>
       </form>
     </section>
     <section class="center wiki" id="wiki-browse">
@@ -63,6 +87,7 @@
     </section>
 
     <script src="/static/scripts/jquery.min.js"></script>
+    <script src="/static/scripts/filter/swearfilter.js"></script>
     <script src="/static/scripts/index.js"></script>
   </body>
 </html>
