@@ -51,6 +51,7 @@ const creationForm = document.getElementById("creation-form");
 const wikiNameCreation = document.getElementById("wiki-name-creation");
 const wikiBgCreation = document.getElementById("wiki-bg-creation");
 const wikiColorCreation = document.getElementById("wiki-color-creation");
+const wikiPubCreation = document.getElementById("wiki-publicity-creation");
 
 let checkDisable = 0;
 
