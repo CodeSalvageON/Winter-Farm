@@ -14,6 +14,8 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const key = process.env.KEY;
+
 function makeId (length) { // Generate Wiki Passwords
   let result = '';
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -68,7 +70,7 @@ app.post('/wiki-create', function (req, res) {
       else {
         let wikiPass = makeId(7);
         let modPass = makeId(7);
-        let wikiInit = sjcl.encrypt(wikiPass, name + "sh9}[" + wikiPass + "sh9}[" + modPass + "sh9}[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1> <hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
+        let wikiInit = sjcl.encrypt(key, name + "sh9}[" + wikiPass + "sh9}[" + modPass + "sh9}[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1> <hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
         
         fs.appendFile(__dirname + '/db/wikis/store.txt', wikiInit + "k89*", function (err) {
           if (err) throw err;
