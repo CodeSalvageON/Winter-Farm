@@ -48,6 +48,12 @@ input, select {
   outline: none;
 }
 
+button {
+  color: black;
+  outline: none;
+  font-family: ROMANSEX;
+}
+
 select {
   width: 40%;
 }

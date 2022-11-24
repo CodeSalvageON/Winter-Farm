@@ -46,7 +46,7 @@ app.post('/wiki-create', function (req, res) {
     res.send("invalid");
   }
 
-  else if (name.length > 100) {
+  else if (name.length > 100 || bg.includes("data:image")) {
     res.send("long");
   }
 
@@ -55,7 +55,7 @@ app.post('/wiki-create', function (req, res) {
       pub = "public";
     }
 
-    fs.readFile('/db/aohell.txt', 'utf8', (err, data) => {
+    fs.readFile(__dirname + '/db/aohell.txt', 'utf8', (err, data) => {
       if (err) {
         console.error(err);
         return;
@@ -68,12 +68,12 @@ app.post('/wiki-create', function (req, res) {
       else {
         let wikiPass = makeId(7);
         let modPass = makeId(7);
-        let wikiInit = sjcl.encrypt(wikiPass, name + "sh9}[" + wikiPass + "sh9}[" + modPass + "sh9}[" + "<h1>Main page</h1> <hr/> You decide what goes on this page." + "0p1" + "k89*"); // What we'll start the wiki off with
+        let wikiInit = sjcl.encrypt(wikiPass, name + "sh9}[" + wikiPass + "sh9}[" + modPass + "sh9}[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1> <hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
         
-        fs.appendFile('/db/wikis/store.txt', wikiInit, function (err) {
+        fs.appendFile(__dirname + '/db/wikis/store.txt', wikiInit + "k89*", function (err) {
           if (err) throw err;
           console.log('Created wiki with the name of ' + name + '.');
-          res.send("complete");
+          res.send(wikiPass + "," + modPass);
         });
       }
     });

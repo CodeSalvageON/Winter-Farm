@@ -116,9 +116,52 @@ returnBrowse.onclick = function () {
 }
 
 // Form submissions
+const creationFormStatus = document.getElementById("creation-form-status");
 
 creationForm.onsubmit = function () {
   event.preventDefault();
 
-  
+  fetch ("/wiki-create", {
+    method : "POST",
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({
+      name : wikiNameCreation.value,
+      pub : wikiPubCreation.value, 
+      bg : wikiBgCreation.value, 
+      color : wikiColorCreation.value
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    if (data === "null") {
+      creationFormStatus.innerText = "Don't leave values blank!";
+    }
+
+    else if (data === "invalid") {
+      creationFormStatus.innerText = "That ain't funny.";
+    }
+
+    else if (data === "long") {
+      creationFormStatus.innerText = "Your wiki's name or background-image is too long.";
+    }
+
+    else if (data === "exists") {
+      creationFormStatus.innerText = "That specific wiki name is taken.";
+    }
+
+    else {
+      creationFormStatus.innerText = "";
+      $("#wiki-create").slideUp();
+    }
+
+    wikiNameCreation.value = "";
+    wikiPubCreation.value = "";
+    wikiBgCreation.value = "";
+    wikiColorCreation.value = "";
+  })
+  .catch(error => {
+    throw error;
+  });
 }
