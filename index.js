@@ -34,6 +34,60 @@ app.get('', function (req, res) {
   res.sendFile(index);
 });
 
+app.get('/get-wiki', function (req, res) {
+  const pageNum = req.body.pageNum;
+  const wikiName = req.body.wikiName;
+
+  fs.readFile(__dirname + "/db/wikis/store.txt", "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    else {
+      if (data.includes(wikiName + "h8^!")) {
+        let splitFile = data.split("k89*");
+
+        for (i = 0; i < splitFile.length; i++) {
+          if (splitFile[i].includes(wikiName + "h8^!")) {
+            let wikiContent = splitFile[i].replace(wikiName + "h8^!", "");
+            let decryptedStuff = sjcl.decrypt(key, wikiContent);
+            let moreContent = decryptedStuff.split("sh9}[");
+            let pageContent = moreContent[5];
+
+            let requestedNum = parseInt(pageNum);
+
+            if (requestedNum === NaN || requestedNum < 1) {
+              requestedNum = 1;
+            }
+
+            let pageSplit= pageContent.split("0p1");
+            let whatYouWant = pageSplit[requestedNum - 1];
+
+            if (whatYouWant === null || whatYouWant === undefined || whatYouWant === "") {
+              res.send("!exists");
+            }
+
+            else {
+              res.send(whatYouWant);
+            }
+          }
+
+          else {
+            // pass
+          }
+        }
+      }
+
+      else {
+        res.send("404");
+      }
+    }
+  });
+});
+
+// Post requests down below
+
 app.post('/wiki-create', function (req, res) {
   const name = escapeHtml(req.body.name);
   let pub = req.body.pub;
@@ -44,7 +98,7 @@ app.post('/wiki-create', function (req, res) {
     res.send("null");
   }
 
-  else if (name.includes("0p1") || name.includes("sh9}[") || name.includes("k89*")) {
+  else if (name.includes("0p1") || name.includes("sh9}[") || name.includes("k89*") || name.includes("h8^!")) {
     res.send("invalid");
   }
 
@@ -57,22 +111,22 @@ app.post('/wiki-create', function (req, res) {
       pub = "public";
     }
 
-    fs.readFile(__dirname + '/db/aohell.txt', 'utf8', (err, data) => {
+    fs.readFile(__dirname + '/db/wikis/store.txt', 'utf8', (err, data) => {
       if (err) {
         console.error(err);
         return;
       }
       
-      if (data.includes(name + "0p1")) {
+      if (data.includes(name + "h8^!")) {
         res.send("exists");
       }
 
       else {
         let wikiPass = makeId(7);
         let modPass = makeId(7);
-        let wikiInit = sjcl.encrypt(key, name + "sh9}[" + wikiPass + "sh9}[" + modPass + "sh9}[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1> <hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
+        let wikiInit = sjcl.encrypt(key, wikiPass + "sh9}[" + modPass + "sh9}[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1> <hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
         
-        fs.appendFile(__dirname + '/db/wikis/store.txt', wikiInit + "k89*", function (err) {
+        fs.appendFile(__dirname + '/db/wikis/store.txt', name + "h8^!" + wikiInit + "k89*", function (err) {
           if (err) throw err;
           console.log('Created wiki with the name of ' + name + '.');
           res.send(wikiPass + "," + modPass);
