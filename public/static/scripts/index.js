@@ -45,6 +45,8 @@ const browseBtn = document.getElementById("browse");
 const returnCreate = document.getElementById("rcreate");
 const returnBrowse = document.getElementById("rbrowse");
 
+const returnStyleGuide = document.getElementById("rstyle-guide");
+
 // Forms
 
 const creationForm = document.getElementById("creation-form");
@@ -170,6 +172,21 @@ wikiEdit.onclick = function () {
   }
 
   $("#wiki-stuff").slideUp();
+  $("#wiki-edit-place").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+returnStyleGuide.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  $("#style-guide").slideUp();
   $("#wiki-edit-place").slideDown();
 
   checkDisable = 1;

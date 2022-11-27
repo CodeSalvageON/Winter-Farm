@@ -32,7 +32,7 @@ body {
   background-image: url("/static/img/init.jpeg");
 }
 
-p, h1, h2, h3, h4, h5, h6, b {
+p, h1, h2, h3, h4, h5, h6, b, pre {
   margin: 0;
 }
 
@@ -60,6 +60,15 @@ button {
 
 select {
   width: 40%;
+}
+
+summary {
+  user-select: none;
+  cursor: pointer;
+}
+
+pre {
+  overflow-y: auto;
 }
 
 .center {
@@ -114,6 +123,16 @@ select {
   display: none;
 }
 
-#wiki-create, #wiki-browse, #wiki-stuff, #wiki-edit-place {
+.false-link {
+  color: blueviolet;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.fifty {
+  width: 50%;
+}
+
+#wiki-create, #wiki-browse, #wiki-stuff, #wiki-edit-place, #style-guide {
   display: none;
 }

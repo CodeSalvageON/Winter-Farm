@@ -1,0 +1,15 @@
+/* Here is where all the wiki styles will go */
+
+.info-box {
+  width: 30%;
+  border: 3px solid black;
+  border-radius: 3px;
+  font-size: 2vw;
+  position: relative;
+  background-color: #c39d9d;
+}
+
+.info-box-image {
+  width: 100%;
+  border-radius: 3px;
+}

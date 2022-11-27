@@ -7,6 +7,7 @@
 
     <link href="/static/deco/css/98.min.css" rel="stylesheet">
     <link href="/static/deco/css/index.css" rel="stylesheet">
+    <link href="/static/deco/css/wiki.css" rel="stylesheet">
     <link href="/static/img/book.gif" rel="icon">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -114,10 +115,69 @@
       <section id="wiki-actual" class="header"></section>
     </section>
     <section class="center wiki" id="wiki-edit-place">
+      <section class="title-bar">
+        <button id="cancel-edit" class="header arial">
+          Cancel
+        </button>
+        <button id="save-edit" class="header arial">
+          Save Changes
+        </button>
+      </section>
+      <p class="header">Use the <a class="false-link" id="style-guide-link">style-guide</a> for wiki styling.</p>
+    </section>
+    <section class="center wiki" id="style-guide">
+      <section class="title-bar">
+        <button id="rstyle-guide" class="header arial">
+          Back to Editing
+        </button>
+      </section>
+      <p class="header">Welcome to the Style Guide!</p>
+      <p class="header">Here, you'll find all you need to know in order to style your wiki.</p>
+      <hr/>
+      <b class="header">Wiki page titles</b>
+      <p class="header">Page titles are the first 50 characters before a <b>title-marker</b>.</p>
+      <details>
+        <summary class="header">Show Example</summary>
+        <pre class="fifty">&lt;h1&gt;A Fine Title&lt;/h1&gt;&lt;p class="title-marker"&gt;&lt;/p&gt;</pre>
+        <p class="header">Thus, the title of that page will be "A Fine Title".</p>
+      </details>
+      <hr/>
+      <b class="header">Adding an info-box</b>
+      <p class="header">Info-boxes denote people, events, and items.</p>
+      <details>
+        <summary class="header">Show Example</summary>
+        <pre class="fifty">
+&lt;section class="info-box"&gt;
+  &lt;b&gt;&lt;i&gt;Duchy of Rome&lt;/i&gt;&lt;/b&gt;
+  &lt;hr/&gt;
+  &lt;img src="https://upload.wikimedia.org/wikipedia/commons/7/75/ByzantineEmpire717%2Bextrainfo%2Bthemes.svg" class="info-box-image"/&gt;
+  &lt;hr/&gt;
+  &lt;p&gt;Info: Example&lt;/p&gt;
+  &lt;p&gt;More Info: Example&lt;/p&gt;
+&lt;/section&gt;
+        </pre>
+        <p class="header">Result:</p>
+        <section class="info-box">
+          <b><i>Duchy of Rome</i></b>
+          <hr/>
+          <img src="/tests/style-guide/duchy.png" class="info-box-image"/>
+          <hr/>
+          <p>Info: Example</p>
+          <p>More Info: Example</p>
+        </section>
+        <i>By ByzantineEmpire717+extrainfo+themes.PNG: User:Amonixinatorderivative work: Hoodinski (talk) - ByzantineEmpire717+extrainfo+themes.PNG, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=17633268</i>
+      </details>
+      <hr/>
+      <p class="header">Adding spaces</p>
+      <p class="header">Spaces are important to add between lines.</p>
+      <details>
+        <summary class="header">Show Example</summary>
+      </details>
     </section>
 
     <script src="/static/scripts/jquery.min.js"></script>
     <script src="/static/scripts/filter/swearfilter.js"></script>
     <script src="/static/scripts/index.js"></script>
+    <script src="/static/scripts/links.js"></script>
   </body>
 </html>
