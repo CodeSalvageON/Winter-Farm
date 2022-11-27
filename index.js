@@ -95,12 +95,23 @@ app.post('/wiki-create', function (req, res) {
   let pub = req.body.pub;
   const bg = req.body.bg;
   const color = req.body.color;
+  const ip = req.ip;
+
+  if (securityList.includes(ip + "equo")) {
+    res.send("speed");
+    return false;
+  }
+
+  else {
+    securityList += String(ip) + "equo";
+    console.log(String(ip) + " marked down.");
+  }
 
   if (name === null || name === undefined || name === "") {
     res.send("null");
   }
 
-  else if (name.includes("0p1") || name.includes("sh9{[") || name.includes("k89*") || name.includes("h8^!")) {
+  else if (name.includes("0p1") || name.includes("sh9{[") || name.includes("k89*") || name.includes("h8^!") || name.includes("tkc)+")) {
     res.send("invalid");
   }
 
@@ -126,17 +137,31 @@ app.post('/wiki-create', function (req, res) {
       else {
         let wikiPass = makeId(7);
         let modPass = makeId(7);
-        let wikiInit = sjcl.encrypt(key, wikiPass + "sh9{[" + modPass + "sh9{[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1> <hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
+        let wikiInit = sjcl.encrypt(key, wikiPass + "sh9{[" + modPass + "sh9{[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1><p class='title-marker'></p><hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
         
         fs.appendFile(__dirname + '/db/wikis/store.txt', name + "h8^!" + wikiInit + "k89*", function (err) {
           if (err) throw err;
           console.log('Created wiki with the name of ' + name + '.');
           res.send(wikiPass + "," + modPass);
         });
+
+        if (pub === "public") {
+         fs.appendFile(__direname + '/db/aohell.txt', "", function (err) {
+           if (err) throw err;
+         });
+        }
       }
     });
   }
 });
+
+// Security 
+
+let securityList = "";
+      
+setInterval(function () {
+  securityList = "";
+}, 600000);
 
 http.listen(port, function(){
   console.log('listening on *:' + port);

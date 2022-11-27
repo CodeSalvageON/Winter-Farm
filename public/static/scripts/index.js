@@ -55,8 +55,21 @@ const wikiPubCreation = document.getElementById("wiki-publicity-creation");
 
 // Wiki actual
 const wikiActual = document.getElementById("wiki-actual");
+let currentWiki = "";
+let currentPage = 1;
+
+// Wiki browsing
+const publicWikiList = document.getElementById("public-wiki-list");
 
 let checkDisable = 0;
+
+// Wiki tools
+const wikiExit = document.getElementById("wiki-exit");
+const wikiEdit = document.getElementById("wiki-edit");
+const wikiFlag = document.getElementById("wiki-flag");
+const wikiDownload = document.getElementById("wiki-download");
+const wikiPagelist = document.getElementById("wiki-pagelist");
+const wikiToolkit = document.getElementById("wiki-toolkit");
 
 createBtn.onclick = function () {
   switch (checkDisable) {
@@ -118,6 +131,32 @@ returnBrowse.onclick = function () {
   }, 500);
 }
 
+// Beyond here we will handle Wiki commands
+
+wikiExit.onclick = function () {
+  fetch ("/get-wiki", {
+    method : "POST", 
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({
+      pageNum : "1", 
+      wikiName : currentWiki
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    wikiActual.innerHTML = data;
+  })
+  .catch(error => {
+    throw error;
+  });
+}
+
+wikiEdit.onclick = function () {
+  
+}
+
 // Form submissions
 const creationFormStatus = document.getElementById("creation-form-status");
 
@@ -150,6 +189,11 @@ creationForm.onsubmit = function () {
       clearForm();
     }
 
+    else if (data === "speed") {
+      creationFormStatus.innerText = "You're creating wikis too fast.";
+      clearForm();
+    }
+
     else if (data === "invalid") {
       creationFormStatus.innerText = "That ain't funny.";
       clearForm();
@@ -172,6 +216,9 @@ creationForm.onsubmit = function () {
       
       creationFormStatus.innerText = "";
       $("#wiki-create").slideUp();
+      
+      currentWiki = wikiNameCreation.value;
+      currentPage = 1;
 
       fetch ("/get-wiki", {
         method : "POST", 
@@ -185,7 +232,7 @@ creationForm.onsubmit = function () {
       })
       .then(response => response.text())
       .then(data => {
-        wikiActual.innerHTML = data + "<hr/><p>P.S. Below are the passwords for Admin access and Mod access respectively.</p><p>These passwords can later be changed in the admin toolkit.</p><hr/><p>Admin Password: " + whatAdmin + "</p><p>Mod Password: " + whatMod + "</p>";
+        wikiActual.innerHTML = data + "<hr/><p>P.S. Below are the passwords for Admin access and Mod access respectively.</p><p>These passwords can later be changed in the admin toolkit.</p><hr/><p>Admin Password: " + whatAdmin + "</p><p>Mod Password: " + whatMod + "</p><p>SAVE THEM ON YOUR DEVICE PERMANENTLY!</p><hr/><i class='header'>Don't Panic: These passwords on the Main Page are only visible to you, and are gone when you leave this Wiki Page.</i>";
         $("#wiki-stuff").slideDown();
         clearForm();
       })
