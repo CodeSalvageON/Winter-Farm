@@ -12,7 +12,6 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
-  user-select: none;
   color: white;
   font-family: ROMANSEX;
   background-color: #796be6;
@@ -28,8 +27,8 @@ body {
   background-image: url("/static/img/init.jpeg");
 }
 
-p {
-  margin: auto;
+p, h1, h2, h3, h4, h5, h6, b {
+  margin: 0;
 }
 
 hr {
@@ -102,6 +101,6 @@ select {
   font-size: 2vw;
 }
 
-#wiki-create, #wiki-browse {
+#wiki-create, #wiki-browse, #wiki-stuff {
   display: none;
 }

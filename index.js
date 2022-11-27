@@ -34,7 +34,7 @@ app.get('', function (req, res) {
   res.sendFile(index);
 });
 
-app.get('/get-wiki', function (req, res) {
+app.post('/get-wiki', function (req, res) {
   const pageNum = req.body.pageNum;
   const wikiName = req.body.wikiName;
 
@@ -52,16 +52,20 @@ app.get('/get-wiki', function (req, res) {
           if (splitFile[i].includes(wikiName + "h8^!")) {
             let wikiContent = splitFile[i].replace(wikiName + "h8^!", "");
             let decryptedStuff = sjcl.decrypt(key, wikiContent);
-            let moreContent = decryptedStuff.split("sh9}[");
+            let moreContent = decryptedStuff.split("sh9{[");
+            console.log(moreContent);
             let pageContent = moreContent[5];
 
             let requestedNum = parseInt(pageNum);
+            console.log(pageNum);
 
             if (requestedNum === NaN || requestedNum < 1) {
               requestedNum = 1;
             }
 
             let pageSplit= pageContent.split("0p1");
+            console.log(pageSplit);
+            console.log(requestedNum);
             let whatYouWant = pageSplit[requestedNum - 1];
 
             if (whatYouWant === null || whatYouWant === undefined || whatYouWant === "") {
@@ -86,8 +90,6 @@ app.get('/get-wiki', function (req, res) {
   });
 });
 
-// Post requests down below
-
 app.post('/wiki-create', function (req, res) {
   const name = escapeHtml(req.body.name);
   let pub = req.body.pub;
@@ -98,7 +100,7 @@ app.post('/wiki-create', function (req, res) {
     res.send("null");
   }
 
-  else if (name.includes("0p1") || name.includes("sh9}[") || name.includes("k89*") || name.includes("h8^!")) {
+  else if (name.includes("0p1") || name.includes("sh9{[") || name.includes("k89*") || name.includes("h8^!")) {
     res.send("invalid");
   }
 
@@ -124,7 +126,7 @@ app.post('/wiki-create', function (req, res) {
       else {
         let wikiPass = makeId(7);
         let modPass = makeId(7);
-        let wikiInit = sjcl.encrypt(key, wikiPass + "sh9}[" + modPass + "sh9}[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1> <hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
+        let wikiInit = sjcl.encrypt(key, wikiPass + "sh9{[" + modPass + "sh9{[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1> <hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
         
         fs.appendFile(__dirname + '/db/wikis/store.txt', name + "h8^!" + wikiInit + "k89*", function (err) {
           if (err) throw err;
