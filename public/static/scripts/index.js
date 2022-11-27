@@ -134,6 +134,11 @@ returnBrowse.onclick = function () {
 // Beyond here we will handle Wiki commands
 
 wikiExit.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+  
   fetch ("/get-wiki", {
     method : "POST", 
     headers : {
@@ -151,10 +156,26 @@ wikiExit.onclick = function () {
   .catch(error => {
     throw error;
   });
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
 }
 
 wikiEdit.onclick = function () {
-  
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  $("#wiki-stuff").slideUp();
+  $("#wiki-edit-place").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
 }
 
 // Form submissions

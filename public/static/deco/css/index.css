@@ -114,6 +114,6 @@ select {
   display: none;
 }
 
-#wiki-create, #wiki-browse, #wiki-stuff {
+#wiki-create, #wiki-browse, #wiki-stuff, #wiki-edit-place {
   display: none;
 }
