@@ -136,3 +136,11 @@ pre {
 #wiki-create, #wiki-browse, #wiki-stuff, #wiki-edit-place, #style-guide {
   display: none;
 }
+
+#editing-area {
+  resize: none;
+  width: 90%;
+  height: 75%;
+  font-size: 2vw;
+  font-family: PIXIE;
+}
