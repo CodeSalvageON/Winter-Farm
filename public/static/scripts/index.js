@@ -72,6 +72,11 @@ const wikiFlag = document.getElementById("wiki-flag");
 const wikiDownload = document.getElementById("wiki-download");
 const wikiPagelist = document.getElementById("wiki-pagelist");
 const wikiToolkit = document.getElementById("wiki-toolkit");
+const wikiHome = document.getElementById("wiki-home");
+
+// Editing options
+const cancelEdit = document.getElementById("cancel-edit");
+const saveEdit = document.getElementById("save-edit");
 
 createBtn.onclick = function () {
   switch (checkDisable) {
@@ -173,6 +178,38 @@ wikiEdit.onclick = function () {
 
   $("#wiki-stuff").slideUp();
   $("#wiki-edit-place").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+wikiHome.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  $("#wiki-stuff").slideUp();
+  $("#info").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+// Here we will handle editing.
+
+cancelEdit.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  $("#wiki-edit-place").slideUp();
+  $("#wiki-stuff").slideDown();
 
   checkDisable = 1;
   setTimeout(function () {

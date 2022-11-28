@@ -84,7 +84,7 @@ app.post('/get-wiki', function (req, res) {
       }
 
       else {
-        res.send("404");
+        res.send("<h1>404</h1><h3>You're a long ways from Marshlands.</h3>");
       }
     }
   });
