@@ -146,7 +146,7 @@ app.post('/wiki-create', function (req, res) {
         });
 
         if (pub === "public") {
-         fs.appendFile(__direname + '/db/aohell.txt', "", function (err) {
+         fs.appendFile(__dirname + '/db/aohell.txt', "", function (err) {
            if (err) throw err;
          });
         }

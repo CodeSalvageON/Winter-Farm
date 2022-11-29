@@ -77,6 +77,7 @@ const wikiHome = document.getElementById("wiki-home");
 // Editing options
 const cancelEdit = document.getElementById("cancel-edit");
 const saveEdit = document.getElementById("save-edit");
+const editingArea = document.getElementById("editing-area");
 
 createBtn.onclick = function () {
   switch (checkDisable) {
@@ -178,6 +179,8 @@ wikiEdit.onclick = function () {
 
   $("#wiki-stuff").slideUp();
   $("#wiki-edit-place").slideDown();
+
+  editingArea.value = wikiActual.innerHTML;
 
   checkDisable = 1;
   setTimeout(function () {
