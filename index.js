@@ -16,6 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const key = process.env.KEY;
 
+// Special functions
+
 function makeId (length) { // Generate Wiki Passwords
   let result = '';
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -27,6 +29,114 @@ function makeId (length) { // Generate Wiki Passwords
   }
   return result;
 }
+
+function getPage (pageNum, wikiName) { // Copied from the get-wiki request below. Probably not the best solution, but works for now.
+  fs.readFile(__dirname + "/db/wikis/store.txt", "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    else {
+      if (data.includes(wikiName + "h8^!")) {
+        let splitFile = data.split("k89*");
+
+        for (i = 0; i < splitFile.length; i++) {
+          if (splitFile[i].includes(wikiName + "h8^!")) {
+            let wikiContent = splitFile[i].replace(wikiName + "h8^!", "");
+            let decryptedStuff = sjcl.decrypt(key, wikiContent);
+            let moreContent = decryptedStuff.split("sh9{[");
+            console.log(moreContent);
+            let pageContent = moreContent[5];
+
+            let requestedNum = parseInt(pageNum);
+            console.log(pageNum);
+
+            if (requestedNum === NaN || requestedNum < 1) {
+              requestedNum = 1;
+            }
+
+            let pageSplit= pageContent.split("0p1");
+            console.log(pageSplit);
+            console.log(requestedNum);
+            let whatYouWant = pageSplit[requestedNum - 1];
+
+            if (whatYouWant === null || whatYouWant === undefined || whatYouWant === "") {
+              return "existsh8^!";
+            }
+
+            else {
+              return whatYouWant;
+            }
+          }
+
+          else {
+            // pass
+          }
+        }
+      }
+
+      else {
+        return "invalidh8^!";
+      }
+    }
+  });
+}
+
+function getAllPages (wikiName, scopeArr) {
+  fs.readFile(__dirname + "/db/wikis/store.txt", "utf8", (err, data) => {
+    if (err) {
+      console.err(err);
+      return;
+    }
+
+    else {
+      if (data.includes(wikiName + "h8^!")) {
+        let splitFile = data.split("k89*");
+
+        for (i = 0; i < splitFile.length; i++) {
+          if (splitFile[i].includes(wikiName + "h8^!")) {
+            let wikiContent = splitFile[i].replace(wikiName + "h8^!", "");
+            let decryptedStuff = sjcl.decrypt(key, wikiContent);
+            let moreContent = decryptedStuff.split("sh9{[");
+            console.log(moreContent);
+            let pageContent = moreContent[5];
+
+            let pageSplit= pageContent.split("0p1");
+
+            if (scopeArr === true) {
+              return pageSplit;
+            }
+
+            else {
+              return moreContent;
+            }
+          }
+
+          else {
+            // pass
+          }
+        }
+      }
+
+      else {
+        return "invalidh8^!";
+      }
+    }
+  });
+}
+
+function checkInvalidChar (value) {
+  if (value.includes("h8^!") || value.includes("k89*") || value.includes("sh9{[") || value.includes("0p1") || value.includes("tkc)+") || value.includes("prot-page87$")) {
+    return false;
+  }
+
+  else {
+    return true;
+  }
+}
+
+// GET Requests down below
 
 app.get('', function (req, res) {
   const index = __dirname + '/public/static/index.html';
@@ -111,7 +221,7 @@ app.post('/wiki-create', function (req, res) {
     res.send("null");
   }
 
-  else if (name.includes("0p1") || name.includes("sh9{[") || name.includes("k89*") || name.includes("h8^!") || name.includes("tkc)+")) {
+  else if (name.includes("0p1") || name.includes("sh9{[") || name.includes("k89*") || name.includes("h8^!") || name.includes("tkc)+") || name.includes("prot-page87$")) {
     res.send("invalid");
   }
 
@@ -155,12 +265,73 @@ app.post('/wiki-create', function (req, res) {
   }
 });
 
+app.post("wikiList", function (req, res) {
+  const wikiEditName = req.body.name;
+  const wikiProt = req.body.prot;
+  const wikiPageNum = req.body.num;
+  const editPlace = String(req.body.place);
+
+  let wikiPageActual = parseInt(wikiPageNum);
+
+  if (wikiPageNum === NaN || wikiPageNum < 1) {
+    wikiPageActual = 1;
+  }
+
+  let ogState = getPage(wikiPageActual, wikiEditName);
+  let isValidPlace = checkInvalidChar(editPlace);
+
+  if (isValidPlace) {
+    let charDiffCheck = 0;
+    
+    function checkCharDiff (val1, val2) {
+      let valOneGrog = val1.length;
+      let valTwoGrog = val2.length;
+
+      let finalGrogDiff = valOneGrog.length - valTwoGrog.length;
+
+      if (finalGrogDiff < 0) {
+        finalGrogDiff = finalGrogDiff * -1;
+      }
+
+      if (finalGrogDiff > 499) {
+        charDiffCheck = 0;
+      }
+
+      else {
+        charDiffCheck = 1;
+      }
+    }
+
+    checkCharDiff(editPlace, ogState);
+    switch (charDiffCheck) {
+      case 0:
+        res.send("long");
+        break;
+      case 1:
+        let wikiPageArr = getAllPages(wikiEditName, true);
+        wikiPageArr[wikiPageActual - 1] = editPlace;
+        let wikiFixedUp = wikiPageArr.join("0p1");
+        
+        let wikiAllArr = getAllPages(wikiEditName, false);
+        wikiAllArr[5] = wikiFixedUp;
+        let wikiAbSet = wikiAllArr.join("sh9{[");
+        break;
+    }
+  }
+
+  else {
+    res.send("invalid");
+  }
+});
+
 // Security 
 
 let securityList = "";
+let editList = "";
       
 setInterval(function () {
   securityList = "";
+  editList = "";
 }, 600000);
 
 http.listen(port, function(){

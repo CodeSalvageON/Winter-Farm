@@ -220,6 +220,18 @@ cancelEdit.onclick = function () {
   }, 500);
 }
 
+saveEdit.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
 returnStyleGuide.onclick = function () {
   switch (checkDisable) {
     case 1:
