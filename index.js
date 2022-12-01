@@ -30,7 +30,7 @@ function makeId (length) { // Generate Wiki Passwords
   return result;
 }
 
-function getPage (pageNum, wikiName) { // Copied from the get-wiki request below. Probably not the best solution, but works for now.
+function getPage (pageNum, wikiName, knifeLife) { // Copied from the get-wiki request below. Probably not the best solution, but works for now.
   fs.readFile(__dirname + "/db/wikis/store.txt", "utf8", (err, data) => {
     if (err) {
       console.error(err);
@@ -66,6 +66,11 @@ function getPage (pageNum, wikiName) { // Copied from the get-wiki request below
             }
 
             else {
+              console.log("Returned " + whatYouWant);
+
+              if (knifeLife === true) {
+                theOtherOG = whatYouWant;
+              }
               return whatYouWant;
             }
           }
@@ -83,7 +88,7 @@ function getPage (pageNum, wikiName) { // Copied from the get-wiki request below
   });
 }
 
-function getAllPages (wikiName, scopeArr) {
+async function getAllPages (wikiName, scopeArr) {
   fs.readFile(__dirname + "/db/wikis/store.txt", "utf8", (err, data) => {
     if (err) {
       console.err(err);
@@ -105,14 +110,17 @@ function getAllPages (wikiName, scopeArr) {
             let pageSplit= pageContent.split("0p1");
 
             if (scopeArr === true) {
+              theUltimateArray = pageSplit;
               return pageSplit;
             }
 
             else if (scopeArr === false) {
+              shambleTown = moreContent;
               return moreContent;
             }
 
             else {
+              marshLands = splitFile;
               return splitFile; 
             }
           }
@@ -269,11 +277,17 @@ app.post('/wiki-create', function (req, res) {
   }
 });
 
-app.post("edit-wiki", function (req, res) {
+let theOtherOG = "";
+let theUltimateArray = [];
+let shambleTown = [];
+let marshLands = [];
+
+app.post("/edit-wiki", async function (req, res) {
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
   const wikiPageNum = req.body.num;
   const editPlace = String(req.body.place);
+  console.log("Editing wiki..." + editPlace);
 
   let wikiPageActual = parseInt(wikiPageNum);
 
@@ -281,7 +295,7 @@ app.post("edit-wiki", function (req, res) {
     wikiPageActual = 1;
   }
 
-  let ogState = getPage(wikiPageActual, wikiEditName);
+  getPage(wikiPageActual, wikiEditName, true);
   let isValidPlace = checkInvalidChar(editPlace);
 
   if (isValidPlace) {
@@ -306,57 +320,64 @@ app.post("edit-wiki", function (req, res) {
       }
     }
 
-    checkCharDiff(editPlace, ogState);
-    switch (charDiffCheck) {
-      case 0:
-        res.send("long");
-        break;
-      case 1:
-        let wikiPageArr = getAllPages(wikiEditName, true);
-        wikiPageArr[wikiPageActual - 1] = editPlace;
-        let wikiFixedUp = wikiPageArr.join("0p1");
+    console.log("Edit string: " + editPlace);
+    await getAllPages(wikiEditName, true);
+    await getAllPages(wikiEditName, false);
+    await getAllPages(wikiEditName, "neither");
+
+    setTimeout(async function () {
+      checkCharDiff(editPlace, theOtherOG);
+      switch (charDiffCheck) {
+        case 0:
+          res.send("long");
+          break;
+        case 1:
+          let wikiPageArr = theUltimateArray;
+          wikiPageArr[wikiPageActual - 1] = editPlace;
+          let wikiFixedUp = wikiPageArr.join("0p1");
         
-        let wikiAllArr = getAllPages(wikiEditName, false);
-        wikiAllArr[5] = wikiFixedUp;
-        let wikiAbSet = wikiAllArr.join("sh9{[");
-        let wikiAbFin = sjcl.encrypt(KEY, wikiAbSet);
+          let wikiAllArr = shambleTown;
+          wikiAllArr[5] = wikiFixedUp;
+          let wikiAbSet = wikiAllArr.join("sh9{[");
+          let wikiAbFin = sjcl.encrypt(key, wikiAbSet);
 
-        let wikiSessionAll = getAllPages(wikiEditName, "neither");
+          let wikiSessionAll = marshLands;
 
-        if (wikiSessionAll === "invalidh8^!") {
-          res.send("!exists");
-        }
+          if (wikiSessionAll === "invalidh8^!") {
+            res.send("!exists");
+          }
 
-        else {
-          for (i = 0; i < wikiSessionAll.length; i++) {
-            if (wikiSessionAll[i].includes(wikiEditName + "")) {
-              let licketySplit = wikiSessionAll[i].split("h8^!");
-              let iWannaDecrypt = licketySplit[1];
+          else {
+            for (i = 0; i < wikiSessionAll.length; i++) {
+              if (wikiSessionAll[i].includes(wikiEditName + "")) {
+                let licketySplit = wikiSessionAll[i].split("h8^!");
+                let iWannaDecrypt = licketySplit[1];
 
-              licketySplit[1] = wikiAbFin;
-              let autoMech = licketySplit.join("h8^!");
+                licketySplit[1] = wikiAbFin;
+                let autoMech = licketySplit.join("h8^!");
 
-              wikiSessionAll[i] = autoMech;
-              let fixedWikiSession = wikiSessionAll.join("k89*");
+                wikiSessionAll[i] = autoMech;
+                let fixedWikiSession = wikiSessionAll.join("k89*");
 
-              fs.writeFile(__dirname + "/db/wikis/store.txt", fixedWikiSession, err => {
-                if (err) {
-                  console.error(err);
-                }
+                fs.writeFile(__dirname + "/db/wikis/store.txt", fixedWikiSession, err => {
+                  if (err) {
+                    console.error(err);
+                  }
 
-                else {
-                  res.send("edited");
-                }
-              });
-            }
+                  else {
+                    res.send("edited");
+                  }
+                });
+              }
 
-            else {
-              // do nothing
+              else {
+                // do nothing
+              }
             }
           }
-        }
-        break;
-    }
+          break;
+      }
+    }, 500);
   }
 
   else {
