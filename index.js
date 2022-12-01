@@ -108,8 +108,12 @@ function getAllPages (wikiName, scopeArr) {
               return pageSplit;
             }
 
-            else {
+            else if (scopeArr === false) {
               return moreContent;
+            }
+
+            else {
+              return splitFile; 
             }
           }
 
@@ -315,6 +319,42 @@ app.post("wikiList", function (req, res) {
         let wikiAllArr = getAllPages(wikiEditName, false);
         wikiAllArr[5] = wikiFixedUp;
         let wikiAbSet = wikiAllArr.join("sh9{[");
+        let wikiAbFin = sjcl.encrypt(KEY, wikiAbSet);
+
+        let wikiSessionAll = getAllPages(wikiEditName, "neither");
+
+        if (wikiSessionAll === "invalidh8^!") {
+          res.send("!exists");
+        }
+
+        else {
+          for (i = 0; i < wikiSessionAll.length; i++) {
+            if (wikiSessionAll[i].includes(wikiEditName + "")) {
+              let licketySplit = wikiSessionAll[i].split("h8^!");
+              let iWannaDecrypt = licketySplit[1];
+
+              licketySplit[1] = wikiAbFin;
+              let autoMech = licketySplit.join("h8^!");
+
+              wikiSessionAll[i] = autoMech;
+              let fixedWikiSession = wikiSessionAll.join("k89*");
+
+              fs.writeFile(__dirname + "/db/wikis/store.txt", fixedWikiSession, err => {
+                if (err) {
+                  console.error(err);
+                }
+
+                else {
+                  res.send("edited");
+                }
+              });
+            }
+
+            else {
+              // do nothing
+            }
+          }
+        }
         break;
     }
   }
