@@ -269,7 +269,7 @@ app.post('/wiki-create', function (req, res) {
   }
 });
 
-app.post("wikiList", function (req, res) {
+app.post("edit-wiki", function (req, res) {
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
   const wikiPageNum = req.body.num;
