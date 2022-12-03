@@ -171,6 +171,8 @@ wikiExit.onclick = function () {
   }, 500);
 }
 
+const editStatus = document.getElementById("edit-status");
+
 wikiEdit.onclick = function () {
   switch (checkDisable) {
     case 1:
@@ -225,6 +227,37 @@ saveEdit.onclick = function () {
     case 1:
       return false;
   }
+
+  editStatus.innerText = "";
+  
+  fetch ("/edit-wiki", {
+    method : "POST",
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({
+      name : currentWiki,
+      num : String(currentPage),
+      place : editingArea.value
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    if (data === "edited") {
+      editStatus.innerText = "Successfully edited.";
+    }
+
+    else if (data === "long") {
+      editStatus.innerText = "Edits can only be up to 500 characters in difference every 10 minutes.";
+    }
+
+    else {
+      editStatus.innerText = "Something went wrong.";
+    }
+  })
+  .catch(error => {
+    throw error;
+  });
 
   checkDisable = 1;
   setTimeout(function () {

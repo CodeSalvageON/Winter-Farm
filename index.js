@@ -288,6 +288,17 @@ app.post("/edit-wiki", async function (req, res) {
   const wikiPageNum = req.body.num;
   const editPlace = String(req.body.place);
   console.log("Editing wiki..." + editPlace);
+  const ip = req.ip;
+
+  if (editList.includes(ip + "equo")) {
+    res.send("long");
+    return false;
+  }
+
+  else {
+    editList += String(ip) + "equo";
+    console.log(String(ip) + " marked down.");
+  }
 
   let wikiPageActual = parseInt(wikiPageNum);
 
