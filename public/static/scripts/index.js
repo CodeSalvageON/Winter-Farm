@@ -254,6 +254,71 @@ wikiFlag.onclick = function () {
   }, 500);
 }
 
+wikiPagelist.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  $("#wiki-stuff").slideUp();
+  $("#comp-page-list").slideDown();
+
+  const pageListHTML = document.getElementById("page-list-html");
+
+  fetch ("/get-all-pages", {
+    method : "POST",
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({
+      name : currentWiki
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    const parsedPages = JSON.parse(data);
+
+    for (i = 0; i < parsedPages.length; i++) {
+      let defTitle = "";
+      let splitTitle = [];
+
+      if (parsedPages[i].includes("<p class='title-marker'></p>") || parsedPages[i].includes('<p class="title-marker"></p>') || parsedPages[i].includes("<p class=title-marker></p>")) {
+        if (parsedPages[i].includes("<p class='title-marker'></p>")) {
+          splitTitle = parsedPages[i].split("<p class='title-marker'></p>");
+        }
+
+        else if (parsedPages[i].includes('<p class="title-marker"></p>')) {
+          splitTitle = parsedPages[i].split('<p class="title-marker"></p>');
+        }
+
+        else {
+          splitTitle = parsedPages[i].split('<p class=title-marker></p>');
+        }
+
+        defTitle = splitTitle[0].substring(0, 50);
+
+        if (defTitle === "") {
+          defTitle = "Un-titled page";
+        }
+      }
+
+      else {
+        defTitle = "Un-titled page";
+      }
+
+      pageListHTML.innerHTML += "<p>Title: " + defTitle + ", Page Number: " + String(i + 1) + "</p>";
+    }
+  })
+  .catch(error => {
+    throw error;
+  });
+  
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
 wikiDownload.onclick = function () {
   const downloadFile = new File([wikiActual.innerHTML], 'page.html', {
     type: 'text/plain',
