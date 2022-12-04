@@ -397,10 +397,129 @@ app.post("/edit-wiki", async function (req, res) {
   }
 });
 
+app.post("/flag-wiki", async function (req, res) {
+  const wikiEditName = req.body.name;
+  const wikiProt = req.body.prot;
+  const wikiPageNum = req.body.num;
+  console.log("Flagging wiki..." + editPlace);
+  const ip = req.ip;
+
+  if (flagList.includes(ip + "equo")) {
+    res.send("long");
+    return false;
+  }
+
+  else {
+    flagList += String(ip) + "equo";
+    console.log(String(ip) + " marked down.");
+  }
+
+  let wikiPageActual = parseInt(wikiPageNum);
+
+  if (wikiPageNum === NaN || wikiPageNum < 1) {
+    wikiPageActual = 1;
+  }
+
+  getPage(wikiPageActual, wikiEditName, true);
+  let isValidPlace = checkInvalidChar("");
+
+  if (isValidPlace) {
+    let charDiffCheck = 0;
+    
+    function checkCharDiff (val1, val2) {
+      let valOneGrog = val1.length;
+      let valTwoGrog = val2.length;
+
+      let finalGrogDiff = valOneGrog.length - valTwoGrog.length;
+
+      if (finalGrogDiff < 0) {
+        finalGrogDiff = finalGrogDiff * -1;
+      }
+
+      if (finalGrogDiff > 499) {
+        charDiffCheck = 0;
+      }
+
+      else {
+        charDiffCheck = 1;
+      }
+    }
+
+    await getAllPages(wikiEditName, true);
+    await getAllPages(wikiEditName, false);
+    await getAllPages(wikiEditName, "neither");
+
+    setTimeout(async function () {
+      checkCharDiff("<p class='deletion-marker'>This page has been flagged for deletion.</p>" + theOtherOG, theOtherOG);
+      switch (charDiffCheck) {
+        case 0:
+          res.send("long");
+          break;
+        case 1:
+          let wikiPageArr = theUltimateArray;
+
+          if (wikiPageArr[wikiPageActual - 1].includes("<p class='deletion-marker'>This page has been flagged for deletion.</p>")) {
+            res.send("already");
+            return false;
+          }
+          
+          wikiPageArr[wikiPageActual - 1] = "<p class='deletion-marker'>This page has been flagged for deletion.</p>" + theOtherOG;
+          let wikiFixedUp = wikiPageArr.join("0p1");
+        
+          let wikiAllArr = shambleTown;
+          wikiAllArr[5] = wikiFixedUp;
+          let wikiAbSet = wikiAllArr.join("sh9{[");
+          let wikiAbFin = sjcl.encrypt(key, wikiAbSet);
+
+          let wikiSessionAll = marshLands;
+
+          if (wikiSessionAll === "invalidh8^!") {
+            res.send("!exists");
+          }
+
+          else {
+            for (i = 0; i < wikiSessionAll.length; i++) {
+              if (wikiSessionAll[i].includes(wikiEditName + "")) {
+                let licketySplit = wikiSessionAll[i].split("h8^!");
+                let iWannaDecrypt = licketySplit[1];
+
+                licketySplit[1] = wikiAbFin;
+                let autoMech = licketySplit.join("h8^!");
+
+                wikiSessionAll[i] = autoMech;
+                let fixedWikiSession = wikiSessionAll.join("k89*");
+
+                fs.writeFile(__dirname + "/db/wikis/store.txt", fixedWikiSession, err => {
+                  if (err) {
+                    console.error(err);
+                  }
+
+                  else {
+                    res.send("edited");
+                  }
+                });
+              }
+
+              else {
+                // do nothing
+              }
+            }
+          }
+          break;
+      }
+    }, 500);
+  }
+
+  else {
+    res.send("invalid");
+  }
+});
+
 // Security 
 
 let securityList = "";
 let editList = "";
+let flagList = "";
       
 setInterval(function () {
   securityList = "";

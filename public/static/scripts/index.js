@@ -190,6 +190,54 @@ wikiEdit.onclick = function () {
   }, 500);
 }
 
+wikiFlag.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  fetch ("/flag-wiki", {
+    method : "POST",
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({
+      name : currentWiki,
+      num : String(currentPage),
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    if (data === "edited") {
+      fetch ("/get-wiki", {
+        method : "POST", 
+        headers : {
+          "Content-Type" : "application/json"
+        },
+        body : JSON.stringify({
+          pageNum : String(currentPage), 
+          wikiName : currentWiki
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        wikiActual.innerHTML = data;
+      })
+      .catch(error => {
+        throw error;
+      });
+    }
+  })
+  .catch(error => {
+    throw error;
+  });
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
 wikiHome.onclick = function () {
   switch (checkDisable) {
     case 1:
