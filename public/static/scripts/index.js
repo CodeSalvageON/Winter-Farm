@@ -295,10 +295,16 @@ wikiPagelist.onclick = function () {
           splitTitle = parsedPages[i].split('<p class=title-marker></p>');
         }
 
-        defTitle = splitTitle[0].substring(0, 50);
+        if (defTitle.length > 50) {
+          defTitle = splitTitle[0].substring(0, 50);
+        }
 
-        if (defTitle === "") {
+        else if (defTitle === "") {
           defTitle = "Un-titled page";
+        }
+
+        else {
+          defTitle = splitTitle[0];
         }
       }
 

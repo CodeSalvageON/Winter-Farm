@@ -522,7 +522,9 @@ app.post("/get-all-pages", async function (req, res) {
   let wikiName = req.body.name;
 
   let wikiPageBreak = await getAllPages(wikiName, true);
-  res.send(JSON.stringify(theUltimateArray));
+  setTimeout(function () {
+    res.send(JSON.stringify(theUltimateArray));
+  }, 500);
 });
 
 // Security 
