@@ -254,6 +254,23 @@ wikiFlag.onclick = function () {
   }, 500);
 }
 
+wikiDownload.onclick = function () {
+  const downloadFile = new File([wikiActual.innerHTML], 'page.html', {
+    type: 'text/plain',
+  });
+  
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(downloadFile);
+
+  link.href = url;
+  link.download = downloadFile.name;
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+}
+
 wikiHome.onclick = function () {
   switch (checkDisable) {
     case 1:

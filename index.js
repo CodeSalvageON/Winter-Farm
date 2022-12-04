@@ -401,7 +401,6 @@ app.post("/flag-wiki", async function (req, res) {
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
   const wikiPageNum = req.body.num;
-  console.log("Flagging wiki..." + editPlace);
   const ip = req.ip;
 
   if (flagList.includes(ip + "equo")) {
