@@ -287,7 +287,7 @@ let theUltimateArray = [];
 let shambleTown = [];
 let marshLands = [];
 
-app.post("/edit-wiki", async function (req, res) {
+app.post("/edit-wiki", async function (req, res) { // Editing specific wiki pages
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
   const wikiPageNum = req.body.num;
@@ -401,7 +401,7 @@ app.post("/edit-wiki", async function (req, res) {
   }
 });
 
-app.post("/flag-wiki", async function (req, res) {
+app.post("/flag-wiki", async function (req, res) { // Flagging for the deletion of wiki pages 
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
   const wikiPageNum = req.body.num;
@@ -516,6 +516,13 @@ app.post("/flag-wiki", async function (req, res) {
   else {
     res.send("invalid");
   }
+});
+
+app.post("/get-all-pages", function (req, res) {
+  let wikiName = req.body.name;
+
+  let wikiPageBreak = await getAllPages(wikiName, true);
+  res.send(JSON.stringify(wikiPageBreak));
 });
 
 // Security 
