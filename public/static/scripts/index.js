@@ -190,11 +190,15 @@ wikiEdit.onclick = function () {
   }, 500);
 }
 
+const actualStatus = document.getElementById("actual-status");
+
 wikiFlag.onclick = function () {
   switch (checkDisable) {
     case 1:
       return false;
   }
+
+  actualStatus.innerText = "";
 
   fetch ("/flag-wiki", {
     method : "POST",
@@ -221,7 +225,21 @@ wikiFlag.onclick = function () {
       })
       .then(response => response.text())
       .then(data => {
-        wikiActual.innerHTML = data;
+        if (data === "edited") {
+          wikiActual.innerHTML = data;
+        }
+
+        else if (data === "already") {
+          actualStatus.innerText = "This page is already flagged for deletion.";
+        }
+
+        else if (data === "long") {
+          actualStatus.innerText = "You can only flag pages every 10 minutes.";
+        }
+
+        else {
+          actualStatus.innerText = "Something went wrong.";
+        }
       })
       .catch(error => {
         throw error;
