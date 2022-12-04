@@ -245,6 +245,27 @@ saveEdit.onclick = function () {
   .then(data => {
     if (data === "edited") {
       editStatus.innerText = "Successfully edited.";
+
+      $("#wiki-edit-place").slideUp();
+      $("#wiki-stuff").slideDown();
+
+      fetch ("/get-wiki", {
+        method : "POST", 
+        headers : {
+          "Content-Type" : "application/json"
+        },
+        body : JSON.stringify({
+          pageNum : String(currentPage), 
+          wikiName : currentWiki
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        wikiActual.innerHTML = data;
+      })
+      .catch(error => {
+        throw error;
+      });
     }
 
     else if (data === "long") {

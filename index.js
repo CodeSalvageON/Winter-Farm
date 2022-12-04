@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000;
 const io = require('socket.io')(http);
 const sjcl = require('sjcl');
 const escapeHtml = require('escape-html');
+const sanitizer = require('sanitizer');
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -286,7 +287,7 @@ app.post("/edit-wiki", async function (req, res) {
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
   const wikiPageNum = req.body.num;
-  const editPlace = String(req.body.place);
+  const editPlace = String(sanitizer.sanitize(req.body.place));
   console.log("Editing wiki..." + editPlace);
   const ip = req.ip;
 
