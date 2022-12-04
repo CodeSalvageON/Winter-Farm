@@ -120,6 +120,10 @@ async function getAllPages (wikiName, scopeArr) {
               return moreContent;
             }
 
+            else if (scopeArr === "cocaine") {
+              return moreContent[0] + "," + moreContent[1];
+            }
+
             else {
               marshLands = splitFile;
               return splitFile; 
