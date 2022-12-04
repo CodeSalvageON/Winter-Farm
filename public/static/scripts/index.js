@@ -31,6 +31,21 @@ function waitForElement(querySelector, timeout){
   });
 }
 
+function escapeHTML (str) {
+  return new Option(str).innerHTML;
+}
+
+function removeTags (str) {
+  if ((str===null) || (str==='')) {
+    return false;
+  }
+    
+  else {
+    str = str.toString();
+    return str.replace( /(<([^>]+)>)/ig, '');
+  }
+}
+
 waitForElement("body", 3000).then(function () {
   loadBack("/static/img/oia.jpeg");
 }).catch(() => {
@@ -46,6 +61,7 @@ const returnCreate = document.getElementById("rcreate");
 const returnBrowse = document.getElementById("rbrowse");
 
 const returnStyleGuide = document.getElementById("rstyle-guide");
+const returnPageList = document.getElementById("rlist");
 
 // Forms
 
@@ -295,29 +311,46 @@ wikiPagelist.onclick = function () {
           splitTitle = parsedPages[i].split('<p class=title-marker></p>');
         }
 
-        if (defTitle.length > 50) {
+        if (splitTitle[0].length > 50) {
           defTitle = splitTitle[0].substring(0, 50);
         }
 
-        else if (defTitle === "") {
+        else if (splitTitle[0] === "") {
           defTitle = "Un-titled page";
         }
 
         else {
           defTitle = splitTitle[0];
         }
+
+        console.log(splitTitle);
       }
 
       else {
         defTitle = "Un-titled page";
       }
 
-      pageListHTML.innerHTML += "<p>Title: " + defTitle + ", Page Number: " + String(i + 1) + "</p>";
+      pageListHTML.innerHTML += "<p>Title: " + removeTags(defTitle) + ", Page Number: " + String(i + 1) + "</p>";
     }
   })
   .catch(error => {
     throw error;
   });
+  
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+returnPageList.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  $("#comp-page-list").slideUp();
+  $("#wiki-stuff").slideDown();
   
   checkDisable = 1;
   setTimeout(function () {

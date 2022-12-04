@@ -269,7 +269,7 @@ app.post('/wiki-create', function (req, res) {
         fs.appendFile(__dirname + '/db/wikis/store.txt', name + "h8^!" + wikiInit + "k89*", function (err) {
           if (err) throw err;
           console.log('Created wiki with the name of ' + name + '.');
-          res.send(wikiPass + "," + modPass);
+          res.send(wikiPass + "," + modPass + "," + bg + "," + color);
         });
 
         if (pub === "public") {
