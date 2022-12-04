@@ -518,11 +518,11 @@ app.post("/flag-wiki", async function (req, res) { // Flagging for the deletion 
   }
 });
 
-app.post("/get-all-pages", function (req, res) {
+app.post("/get-all-pages", async function (req, res) {
   let wikiName = req.body.name;
 
   let wikiPageBreak = await getAllPages(wikiName, true);
-  res.send(JSON.stringify(wikiPageBreak));
+  res.send(JSON.stringify(theUltimateArray));
 });
 
 // Security 
