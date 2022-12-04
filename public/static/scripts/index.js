@@ -225,25 +225,23 @@ wikiFlag.onclick = function () {
       })
       .then(response => response.text())
       .then(data => {
-        if (data === "edited") {
-          wikiActual.innerHTML = data;
-        }
-
-        else if (data === "already") {
-          actualStatus.innerText = "This page is already flagged for deletion.";
-        }
-
-        else if (data === "long") {
-          actualStatus.innerText = "You can only flag pages every 10 minutes.";
-        }
-
-        else {
-          actualStatus.innerText = "Something went wrong.";
-        }
+        wikiActual.innerHTML = data;
       })
       .catch(error => {
         throw error;
       });
+    }
+
+    else if (data === "long") {
+      actualStatus.innerText = "Flagging can only be done every 10 minutes.";
+    }
+
+    else if (data === "already") {
+      actualStatus.innerText = "This page is already flagged.";
+    }
+
+    else {
+      actualStatus.innerText = "Something went wrong.";
     }
   })
   .catch(error => {
