@@ -137,7 +137,7 @@ pre {
   width: 50%;
 }
 
-#wiki-create, #wiki-browse, #wiki-stuff, #wiki-edit-place, #style-guide, #comp-page-list {
+#wiki-create, #wiki-browse, #wiki-stuff, #wiki-edit-place, #style-guide, #comp-page-list, #wiki-page-place {
   display: none;
 }
 

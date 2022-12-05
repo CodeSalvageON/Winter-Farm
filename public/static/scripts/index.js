@@ -62,6 +62,7 @@ const returnBrowse = document.getElementById("rbrowse");
 
 const returnStyleGuide = document.getElementById("rstyle-guide");
 const returnPageList = document.getElementById("rlist");
+let styleGuidePlace = 0;
 
 // Forms
 
@@ -94,6 +95,13 @@ const wikiHome = document.getElementById("wiki-home");
 const cancelEdit = document.getElementById("cancel-edit");
 const saveEdit = document.getElementById("save-edit");
 const editingArea = document.getElementById("editing-area");
+
+// Page Creation options
+const makePage = document.getElementById("make-page");
+const cancelCreate = document.getElementById("cancel-create");
+const saveCreate = document.getElementById("save-create");
+const cpageStatus = document.getElementById("cpage-status");
+const pageCreateArea = document.getElementById("cpage-area");
 
 createBtn.onclick = function () {
   switch (checkDisable) {
@@ -293,6 +301,7 @@ wikiPagelist.onclick = function () {
   .then(response => response.text())
   .then(data => {
     const parsedPages = JSON.parse(data);
+    pageListHTML.innerHTML = "";
 
     for (i = 0; i < parsedPages.length; i++) {
       let defTitle = "";
@@ -337,6 +346,38 @@ wikiPagelist.onclick = function () {
     throw error;
   });
   
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+// Here we will deal with page creation on the client side
+
+makePage.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  $("#comp-page-list").slideUp();
+  $("#wiki-page-place").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+cancelCreate.onclick = function () {
+  switch (checkDisable) {
+    case 1: 
+      return false;
+  }
+
+  $("#wiki-page-place").slideUp();
+  $("#comp-page-list").slideDown();
+
   checkDisable = 1;
   setTimeout(function () {
     checkDisable = 0;
@@ -478,7 +519,14 @@ returnStyleGuide.onclick = function () {
   }
 
   $("#style-guide").slideUp();
-  $("#wiki-edit-place").slideDown();
+  switch (styleGuidePlace) {
+    case 0:
+      $("#wiki-edit-place").slideDown();
+      break;
+    case 1:
+      $("#wiki-page-place").slideDown();
+      break;
+  }
 
   checkDisable = 1;
   setTimeout(function () {
@@ -542,8 +590,20 @@ creationForm.onsubmit = function () {
       let jargonMargon = data.split(",");
       let whatAdmin = jargonMargon[0];
       let whatMod = jargonMargon[1];
+      let bgImg = jargonMargon[2];
+      let colorBG = jargonMargon[3];
       
       creationFormStatus.innerText = "";
+
+      if (bgImg === "" || bgImg === null || bgImg === undefined) {
+        // do nothing
+      }
+
+      else {
+        loadBack(bgImg);
+      }
+      body.style.backgroundColor = colorBG;
+      
       $("#wiki-create").slideUp();
       
       currentWiki = wikiNameCreation.value;
