@@ -222,7 +222,21 @@ app.post('/wiki-create', function (req, res) {
   let pub = req.body.pub;
   const bg = req.body.bg;
   const color = req.body.color;
-  const ip = req.ip;
+  
+  let ip = "";
+  let forwarded = req.headers['x-forwarded-for']
+  
+  if (req.headers['x-forwarded-for']) {
+    ip = req.headers['x-forwarded-for'].split(",")[0];
+  } 
+
+  else if (req.connection && req.connection.remoteAddress) {
+    ip = req.connection.remoteAddress;
+  } 
+
+  else {
+    ip = req.ip;
+  }
 
   if (securityList.includes(ip + "equo")) {
     res.send("speed");
@@ -293,7 +307,21 @@ app.post("/edit-wiki", async function (req, res) { // Editing specific wiki page
   const wikiPageNum = req.body.num;
   const editPlace = String(sanitizer.sanitize(req.body.place));
   console.log("Editing wiki..." + editPlace);
-  const ip = req.ip;
+
+  let ip = "";
+  let forwarded = req.headers['x-forwarded-for']
+  
+  if (req.headers['x-forwarded-for']) {
+    ip = req.headers['x-forwarded-for'].split(",")[0];
+  } 
+
+  else if (req.connection && req.connection.remoteAddress) {
+    ip = req.connection.remoteAddress;
+  } 
+
+  else {
+    ip = req.ip;
+  }
 
   if (editList.includes(ip + "equo")) {
     res.send("long");
@@ -405,7 +433,21 @@ app.post("/flag-wiki", async function (req, res) { // Flagging for the deletion 
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
   const wikiPageNum = req.body.num;
-  const ip = req.ip;
+
+  let ip = "";
+  let forwarded = req.headers['x-forwarded-for']
+  
+  if (req.headers['x-forwarded-for']) {
+    ip = req.headers['x-forwarded-for'].split(",")[0];
+  } 
+
+  else if (req.connection && req.connection.remoteAddress) {
+    ip = req.connection.remoteAddress;
+  } 
+
+  else {
+    ip = req.ip;
+  }
 
   if (flagList.includes(ip + "equo")) {
     res.send("long");

@@ -102,6 +102,7 @@ const cancelCreate = document.getElementById("cancel-create");
 const saveCreate = document.getElementById("save-create");
 const cpageStatus = document.getElementById("cpage-status");
 const pageCreateArea = document.getElementById("cpage-area");
+const cpageAuth = document.getElementById("cpage-auth");
 
 createBtn.onclick = function () {
   switch (checkDisable) {
