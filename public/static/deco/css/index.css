@@ -41,7 +41,7 @@ hr {
   border: 1px solid #747a86;
 }
 
-input, select {
+input, select, option {
   color: black;
   border-radius: 3px;
   box-shadow: 5px 10px 18px black;
@@ -50,6 +50,10 @@ input, select {
   font-family: ROMANSEX;
   border: hidden;
   outline: none;
+}
+
+select {
+  height: 10%;
 }
 
 button {
@@ -141,7 +145,7 @@ pre {
   display: none;
 }
 
-#editing-area {
+#editing-area, #cpage-area {
   resize: none;
   width: 90%;
   height: 75%;

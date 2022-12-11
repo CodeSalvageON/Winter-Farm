@@ -108,7 +108,7 @@ async function getAllPages (wikiName, scopeArr) {
             console.log(moreContent);
             let pageContent = moreContent[5];
 
-            let pageSplit= pageContent.split("0p1");
+            let pageSplit = pageContent.split("0p1");
 
             if (scopeArr === true) {
               theUltimateArray = pageSplit;
@@ -137,6 +137,8 @@ async function getAllPages (wikiName, scopeArr) {
       }
 
       else {
+        theUltimateArray = "invalid";
+        shambleTown = "invalid";
         return "invalidh8^!";
       }
     }
@@ -560,7 +562,7 @@ app.post("/flag-wiki", async function (req, res) { // Flagging for the deletion 
   }
 });
 
-app.post("/get-all-pages", async function (req, res) {
+app.post("/get-all-pages", async function (req, res) { // Get all the pages of a wiki
   let wikiName = req.body.name;
 
   let wikiPageBreak = await getAllPages(wikiName, true);
@@ -569,15 +571,123 @@ app.post("/get-all-pages", async function (req, res) {
   }, 500);
 });
 
+app.post("/create-page", async function (req, res) { // Create a page within a wiki
+  let optionalAuth = req.body.auth;
+  let pageContent = req.body.cont;
+  let wikiName = req.body.name;
+
+  // Below this line is an IP function which gets the IP for security.
+  
+  let ip = "";
+  let forwarded = req.headers['x-forwarded-for'];
+  
+  if (req.headers['x-forwarded-for']) {
+    ip = req.headers['x-forwarded-for'].split(",")[0];
+  } 
+
+  else if (req.connection && req.connection.remoteAddress) {
+    ip = req.connection.remoteAddress;
+  } 
+
+  else {
+    ip = req.ip;
+  }
+
+  // Above this line is the IP function for security...
+
+  let theGetPass = await getAllPages(wikiName, false);
+  await getAllPages(wikiName, true);
+  await getAllPages(wikiName, "neither");
+
+  setTimeout(function () {
+    if (shambleTown === "invalid") {
+      res.send("invalid");
+    }
+
+    else {
+      let modPassResult = shambleTown[1];
+      let wikiPassResult = shambleTown[0];
+
+      if (optionalAuth === modPassResult || optionalAuth === wikiPassResult) {
+        console.log("User with auth passed through.");
+      }
+
+      else {
+        if (createList.includes(ip + "equo")) {
+          res.send("long");
+          return false;
+        }
+
+        else {
+          createList += String(ip) + "equo";
+          console.log(String(ip) + " marked down.");
+
+          if (cont.length > 500) {
+            res.send("long");
+            return false;
+          }
+        }
+      }
+
+      let wikiPageArr = theUltimateArray;
+      wikiPageArr.push(pageContent);
+      let wikiFixedUp = wikiPageArr.join("0p1");
+        
+      let wikiAllArr = shambleTown;
+      wikiAllArr[5] = wikiFixedUp;
+      let wikiAbSet = wikiAllArr.join("sh9{[");
+      let wikiAbFin = sjcl.encrypt(key, wikiAbSet);
+
+      let wikiSessionAll = marshLands;
+
+      if (wikiSessionAll === "invalidh8^!") { // Check if wiki doesn't exist
+        res.send("invalid");
+      }
+
+      else {
+        for (i = 0; i < wikiSessionAll.length; i++) {
+          if (wikiSessionAll[i].includes(wikiName + "")) {
+            let licketySplit = wikiSessionAll[i].split("h8^!");
+            let iWannaDecrypt = licketySplit[1];
+
+            licketySplit[1] = wikiAbFin;
+            let autoMech = licketySplit.join("h8^!");
+
+            wikiSessionAll[i] = autoMech;
+            let fixedWikiSession = wikiSessionAll.join("k89*");
+
+            fs.writeFile(__dirname + "/db/wikis/store.txt", fixedWikiSession, err => {
+              if (err) {
+                console.error(err);
+              }
+
+              else {
+                res.send("edited");
+              }
+            });
+          }
+
+          else {
+            // do nothing
+          }
+        }
+      }
+    }
+  }, 500);
+});
+
 // Security 
 
 let securityList = "";
 let editList = "";
 let flagList = "";
+let createList = "";
       
 setInterval(function () {
   securityList = "";
   editList = "";
+  flagList = "";
+  createList = "";
 }, 600000);
 
 http.listen(port, function(){
