@@ -622,7 +622,7 @@ app.post("/create-page", async function (req, res) { // Create a page within a w
           createList += String(ip) + "equo";
           console.log(String(ip) + " marked down.");
 
-          if (cont.length > 500) {
+          if (pageContent.length > 500) {
             res.send("long");
             return false;
           }
