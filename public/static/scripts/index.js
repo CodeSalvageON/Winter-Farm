@@ -396,6 +396,73 @@ cancelCreate.onclick = function () {
   }, 500);
 }
 
+saveCreate.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  fetch ("/create-page", {
+    method : "POST",
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({
+      auth : cpageAuth.value,
+      cont : pageCreateArea.value,
+      name : currentWiki
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    if (data === "invalid") {
+      cpageStatus.innerText = "Something went wrong.";
+    }
+
+    else if (data === "long") {
+      cpageStatus.innerText = "Without authorization, you can only create pages every 10 minutes with a limit of 500 characters.";
+    }
+
+    else {
+      fetch ("/get-all-pages", {
+        method : "POST",
+        headers : {
+          "Content-Type" : "application/json"
+        },
+        body : JSON.stringify({
+          name : currentWiki
+        })
+      })
+     .then(response => response.text())
+     .then(data => {
+       const parsedPages = JSON.parse(data);
+       let oogaLength = parsedPages.length - 1;
+
+       wikiActual.innerHTML = parsedPages[oogaLength];
+
+       $("#wiki-page-place").slideUp();
+       $("#wiki-stuff").slideDown();
+
+       cpageStatus.value = "";
+       cpageStatus.innerText = "";
+     })
+    .catch(error => {
+      throw error;
+    });
+   }
+  })
+  .catch(error => {
+    throw error;
+  });
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+// Mundane stuff below
+
 returnPageList.onclick = function () {
   switch (checkDisable) {
     case 1:
