@@ -189,7 +189,7 @@ wikiExit.onclick = function () {
       "Content-Type" : "application/json"
     },
     body : JSON.stringify({
-      pageNum : "1", 
+      pageNum : 1, 
       wikiName : currentWiki
     })
   })
