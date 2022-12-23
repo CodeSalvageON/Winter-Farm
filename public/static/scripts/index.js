@@ -471,6 +471,8 @@ pageNav.onclick = function () {
     case 1:
       return false;
   }
+
+  currentPage = pageNavNum.value;
   
   fetch ("/get-wiki", {
     method : "POST", 
