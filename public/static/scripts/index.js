@@ -461,6 +461,44 @@ saveCreate.onclick = function () {
   }, 500);
 }
 
+// Page List Navigation
+
+const pageNav = document.getElementById("plist-nav");
+const pageNavNum = document.getElementById("plist-num");
+
+pageNav.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+  
+  fetch ("/get-wiki", {
+    method : "POST", 
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({
+      pageNum : String(pageNavNum.value), 
+      wikiName : currentWiki
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    wikiActual.innerHTML = data;
+
+    $("#comp-page-list").slideUp();
+    $("#wiki-stuff").slideDown();
+  })
+  .catch(error => {
+    throw error;
+  });
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
 // Mundane stuff below
 
 returnPageList.onclick = function () {

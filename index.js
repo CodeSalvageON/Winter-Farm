@@ -280,7 +280,7 @@ app.post('/wiki-create', function (req, res) {
       else {
         let wikiPass = makeId(7);
         let modPass = makeId(7);
-        let wikiInit = sjcl.encrypt(key, wikiPass + "sh9{[" + modPass + "sh9{[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1><p class='title-marker'></p><hr/> You decide what goes on this page." + "0p1"); // What we'll start the wiki off with
+        let wikiInit = sjcl.encrypt(key, wikiPass + "sh9{[" + modPass + "sh9{[" + pub + "sh9{[" + bg + "sh9{[" + color + "sh9{[" + "<h1>Main page</h1><p class='title-marker'></p><hr/> You decide what goes on this page." + "0p1<h1>Second Page</h1><p class='title-marker'></p>"); // What we'll start the wiki off with
         
         fs.appendFile(__dirname + '/db/wikis/store.txt', name + "h8^!" + wikiInit + "k89*", function (err) {
           if (err) throw err;
@@ -336,10 +336,14 @@ app.post("/edit-wiki", async function (req, res) { // Editing specific wiki page
   }
 
   let wikiPageActual = parseInt(wikiPageNum);
+  console.log("Wiki Page Actual: " + wikiPageNum);
 
-  if (wikiPageNum === NaN || wikiPageNum < 1) {
+  if (wikiPageActual === NaN || wikiPageActual < 1) {
     wikiPageActual = 1;
+    console.log("NaN or else");
   }
+
+  wikiPageActual += 1;
 
   getPage(wikiPageActual, wikiEditName, true);
   let isValidPlace = checkInvalidChar(editPlace);
@@ -380,6 +384,7 @@ app.post("/edit-wiki", async function (req, res) { // Editing specific wiki page
         case 1:
           let wikiPageArr = theUltimateArray;
           wikiPageArr[wikiPageActual - 1] = editPlace;
+          console.log(wikiPageActual - 1);
           let wikiFixedUp = wikiPageArr.join("0p1");
         
           let wikiAllArr = shambleTown;
@@ -404,6 +409,7 @@ app.post("/edit-wiki", async function (req, res) { // Editing specific wiki page
 
                 wikiSessionAll[i] = autoMech;
                 let fixedWikiSession = wikiSessionAll.join("k89*");
+                console.log(JSON.stringify(wikiFixedUp));
 
                 fs.writeFile(__dirname + "/db/wikis/store.txt", fixedWikiSession, err => {
                   if (err) {
