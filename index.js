@@ -469,7 +469,7 @@ app.post("/flag-wiki", async function (req, res) { // Flagging for the deletion 
 
   let wikiPageActual = parseInt(wikiPageNum);
 
-  if (wikiPageNum === NaN || wikiPageNum < 1) {
+  if (wikiPageActual === NaN || wikiPageActual < 1) {
     wikiPageActual = 1;
   }
 
