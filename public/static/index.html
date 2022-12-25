@@ -61,10 +61,10 @@
         <i>The name of the wiki you're creating.</i>
         <p>
           Publicity: <select id="wiki-publicity-creation" required class="header">
-            <option value="public">
+            <option value="public" class="header">
               Public
             </option>
-            <option value="private">
+            <option value="private" class="header">
               Private
             </option>
           </select>
@@ -211,6 +211,12 @@
       <p class="header" id="cpage-status"></p>
       <p class="header">Wiki auth (mods and admins only): <input class="header" id="cpage-auth"/></p>
       <textarea id="cpage-area"></textarea>
+    </section>
+    <section class="center wiki" id="wiki-admin-place">
+      <section class="op-btn" id="radmin">
+        Return
+      </section>
+      <hr/>
     </section>
 
     <script src="/static/scripts/jquery.min.js"></script>

@@ -52,7 +52,7 @@ input, select, option {
   outline: none;
 }
 
-select {
+select, option {
   height: 10%;
 }
 
@@ -141,7 +141,7 @@ pre {
   width: 50%;
 }
 
-#wiki-create, #wiki-browse, #wiki-stuff, #wiki-edit-place, #style-guide, #comp-page-list, #wiki-page-place {
+#wiki-create, #wiki-browse, #wiki-stuff, #wiki-edit-place, #style-guide, #comp-page-list, #wiki-page-place, #wiki-admin-place {
   display: none;
 }
 

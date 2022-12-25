@@ -167,6 +167,11 @@ app.post('/get-wiki', function (req, res) {
   const pageNum = req.body.pageNum;
   const wikiName = req.body.wikiName;
 
+  if (wikiName === "" || wikiName === undefined || wikiName === null) {
+    res.send("404");
+    return false;
+  }
+
   fs.readFile(__dirname + "/db/wikis/store.txt", "utf8", (err, data) => {
     if (err) {
       console.error(err);

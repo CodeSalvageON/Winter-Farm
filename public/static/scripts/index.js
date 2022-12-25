@@ -73,6 +73,8 @@ const returnBrowse = document.getElementById("rbrowse");
 
 const returnStyleGuide = document.getElementById("rstyle-guide");
 const returnPageList = document.getElementById("rlist");
+
+const radmin = document.getElementById("radmin");
 let styleGuidePlace = 0;
 
 // Forms
@@ -219,6 +221,36 @@ wikiEdit.onclick = function () {
   $("#wiki-edit-place").slideDown();
 
   editingArea.value = wikiActual.innerHTML;
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+wikiToolkit.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  $("#wiki-stuff").slideUp();
+  $("#wiki-admin-place").slideDown();
+
+  checkDisable = 1;
+  setTimeout(function () {
+    checkDisable = 0;
+  }, 500);
+}
+
+radmin.onclick = function () {
+  switch (checkDisable) {
+    case 1:
+      return false;
+  }
+
+  $("#wiki-admin-place").slideUp();
+  $("#wiki-stuff").slideDown();
 
   checkDisable = 1;
   setTimeout(function () {
