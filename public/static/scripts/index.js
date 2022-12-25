@@ -552,8 +552,51 @@ const pageDelNum = document.getElementById("page-del-num");
 const pageDelPass = document.getElementById("page-del-pass");
 const chagPag = document.getElementById("chagpag");
 
+const toolkitStatus = document.getElementById("toolkit-status");
+
 adminChangeBtn.onclick = function () {
+  toolkitStatus.innerText = "";
   
+  if (oldAdmin.value === "" || oldAdmin.value === null || oldAdmin.value === undefined || adminChangeInput.value === "" || adminChangeInput.value === undefined || adminChangeInput.value === null) {
+    toolkitStatus.innerText = "Error: One of your inputs is empty!";
+  }
+
+  else {
+    fetch ("/change-admin", {
+      method : "POST", 
+      headers : {
+        "Content-Type" : "application/json" 
+      },
+      body : JSON.stringify({
+        auth : oldAdmin.value, 
+        new : adminChangeInput.value, 
+        name : currentWiki
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      if (data === "invalid") {
+        toolkitStatus.innerText = "Error: Something went wrong...";
+      }
+
+      else if (data === "404") {
+        toolkitStatus.innerText = "Error: One of your inputs is empty!";
+      }
+
+      else if (data === "wrong") {
+        toolkitStatus.innerHTML = "Error: Wrong admin password.";
+      }
+
+      else {
+        toolkitStatus.innerText = "Changed Admin Password.";
+        oldAdmin.value = "";
+        adminChangeInput.value = "";
+      }
+    })
+    .catch(error => {
+      throw error;
+    });
+  }
 }
 
 // Mundane stuff below

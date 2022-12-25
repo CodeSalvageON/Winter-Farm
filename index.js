@@ -793,7 +793,7 @@ app.post("/change-admin", async function (req, res) { // Change Admin Password
       }
 
       else {
-        
+        res.send("wrong");
       }
     }
   }, 500);
