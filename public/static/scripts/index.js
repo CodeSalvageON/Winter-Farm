@@ -644,6 +644,51 @@ modChangeBtn.onclick = function () {
   }
 }
 
+urlChangeBtn.onclick = function () {
+  toolkitStatus.innerText = "";
+  
+  if (urlChangePass.value === "" || urlChangePass.value === null || urlChangePass.value === undefined || urlChangeInput.value === "" || urlChangeInput.value === undefined || urlChangeInput.value === null) {
+    toolkitStatus.innerText = "Error: One of your inputs is empty!";
+  }
+
+  else {
+    fetch ("/change-mod", {
+      method : "POST", 
+      headers : {
+        "Content-Type" : "application/json" 
+      },
+      body : JSON.stringify({
+        auth : urlChangePass.value, 
+        new : urlChangeInput.value, 
+        name : currentWiki
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      if (data === "invalid") {
+        toolkitStatus.innerText = "Error: Something went wrong...";
+      }
+
+      else if (data === "404") {
+        toolkitStatus.innerText = "Error: One of your inputs is empty!";
+      }
+
+      else if (data === "wrong") {
+        toolkitStatus.innerHTML = "Error: Wrong admin password.";
+      }
+
+      else {
+        toolkitStatus.innerText = "Changed Admin Password.";
+        modChangeInput.value = "";
+        modChangePass.value = "";
+      }
+    })
+    .catch(error => {
+      throw error;
+    });
+  }
+}
+
 // Mundane stuff below
 
 returnPageList.onclick = function () {

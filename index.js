@@ -713,21 +713,6 @@ app.post("/change-admin", async function (req, res) { // Change Admin Password
   let wikiName = req.body.name;
 
   // Below this line is an IP function which gets the IP for security.
-  
-  let ip = "";
-  let forwarded = req.headers['x-forwarded-for'];
-  
-  if (req.headers['x-forwarded-for']) {
-    ip = req.headers['x-forwarded-for'].split(",")[0];
-  } 
-
-  else if (req.connection && req.connection.remoteAddress) {
-    ip = req.connection.remoteAddress;
-  } 
-
-  else {
-    ip = req.ip;
-  }
 
   if (wikiName === "" || wikiName === undefined || wikiName === null || newAuth === "" || newAuth === undefined || newAuth === null) {
     res.send("404");
@@ -806,21 +791,6 @@ app.post("/change-mod", async function (req, res) { // Change Mod Password
   let wikiName = req.body.name;
 
   // Below this line is an IP function which gets the IP for security.
-  
-  let ip = "";
-  let forwarded = req.headers['x-forwarded-for'];
-  
-  if (req.headers['x-forwarded-for']) {
-    ip = req.headers['x-forwarded-for'].split(",")[0];
-  } 
-
-  else if (req.connection && req.connection.remoteAddress) {
-    ip = req.connection.remoteAddress;
-  } 
-
-  else {
-    ip = req.ip;
-  }
 
   if (wikiName === "" || wikiName === undefined || wikiName === null || newAuth === "" || newAuth === undefined || newAuth === null) {
     res.send("404");
@@ -899,21 +869,6 @@ app.post("/change-bg", async function (req, res) { // Change Mod Password
   let wikiName = req.body.name;
 
   // Below this line is an IP function which gets the IP for security.
-  
-  let ip = "";
-  let forwarded = req.headers['x-forwarded-for'];
-  
-  if (req.headers['x-forwarded-for']) {
-    ip = req.headers['x-forwarded-for'].split(",")[0];
-  } 
-
-  else if (req.connection && req.connection.remoteAddress) {
-    ip = req.connection.remoteAddress;
-  } 
-
-  else {
-    ip = req.ip;
-  }
 
   if (wikiName === "" || wikiName === undefined || wikiName === null || newAuth === "" || newAuth === undefined || newAuth === null) {
     res.send("404");
