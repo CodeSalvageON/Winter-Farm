@@ -348,6 +348,11 @@ app.post("/edit-wiki", async function (req, res) { // Editing specific wiki page
     console.log("NaN or else");
   }
 
+  if (wikiEditName === "" || wikiEditName === undefined || wikiEditName === null) {
+    res.send("404");
+    return false;
+  }
+
   wikiPageActual += 1;
 
   getPage(wikiPageActual, wikiEditName, true);
@@ -478,6 +483,11 @@ app.post("/flag-wiki", async function (req, res) { // Flagging for the deletion 
     wikiPageActual = 1;
   }
 
+  if (wikiEditName === "" || wikiEditName === undefined || wikiEditName === null) {
+    res.send("404");
+    return false;
+  }
+
   getPage(wikiPageActual, wikiEditName, true);
   let isValidPlace = checkInvalidChar("");
 
@@ -602,6 +612,11 @@ app.post("/create-page", async function (req, res) { // Create a page within a w
 
   else {
     ip = req.ip;
+  }
+
+  if (wikiName === "" || wikiName === undefined || wikiName === null) {
+    res.send("404");
+    return false;
   }
 
   // Above this line is the IP function for security...
