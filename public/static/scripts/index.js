@@ -537,9 +537,11 @@ pageNav.onclick = function () {
 // Admin Toolkit
 
 const adminChangeInput = document.getElementById("admin-change");
+const oldAdmin = document.getElementById("old-admin");
 const adminChangeBtn = document.getElementById("chagmin");
 
 const modChangeInput = document.getElementById("mod-change");
+const modChangePass = document.getElementById("mod-change-pass");
 const modChangeBtn = document.getElementById("chagmod");
 
 const urlChangeInput = document.getElementById("url-change");
