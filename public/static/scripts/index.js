@@ -599,6 +599,51 @@ adminChangeBtn.onclick = function () {
   }
 }
 
+modChangeBtn.onclick = function () {
+  toolkitStatus.innerText = "";
+  
+  if (modChangePass.value === "" || modChangePass.value === null || modChangePass.value === undefined || modChangeInput.value === "" || modChangeInput.value === undefined || modChangeInput.value === null) {
+    toolkitStatus.innerText = "Error: One of your inputs is empty!";
+  }
+
+  else {
+    fetch ("/change-mod", {
+      method : "POST", 
+      headers : {
+        "Content-Type" : "application/json" 
+      },
+      body : JSON.stringify({
+        auth : modChangePass.value, 
+        new : modChangeInput.value, 
+        name : currentWiki
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      if (data === "invalid") {
+        toolkitStatus.innerText = "Error: Something went wrong...";
+      }
+
+      else if (data === "404") {
+        toolkitStatus.innerText = "Error: One of your inputs is empty!";
+      }
+
+      else if (data === "wrong") {
+        toolkitStatus.innerHTML = "Error: Wrong admin password.";
+      }
+
+      else {
+        toolkitStatus.innerText = "Changed Admin Password.";
+        modChangeInput.value = "";
+        modChangePass.value = "";
+      }
+    })
+    .catch(error => {
+      throw error;
+    });
+  }
+}
+
 // Mundane stuff below
 
 returnPageList.onclick = function () {
