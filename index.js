@@ -749,11 +749,11 @@ app.post("/change-admin", async function (req, res) { // Change Admin Password
       let wikiPassResult = shambleTown[0];
       let modPassResult = shambleTown[1];
 
-      if (optionalAuth === modPassResult || optionalAuth === wikiPassResult) {
+      if (optionalAuth === wikiPassResult) {
         console.log("User with auth passed through.");
 
         let wikiAllArr = shambleTown;
-        wikiAllArr[1] = newAuth;
+        wikiAllArr[0] = newAuth;
         let wikiAbSet = wikiAllArr.join("sh9{[");
         let wikiAbFin = sjcl.encrypt(key, wikiAbSet);
 
@@ -840,12 +840,13 @@ app.post("/change-mod", async function (req, res) { // Change Mod Password
 
     else {
       let wikiPassResult = shambleTown[0];
+      let modPassResult = shambleTown[1];
 
       if (optionalAuth === wikiPassResult) {
         console.log("User with auth passed through.");
 
         let wikiAllArr = shambleTown;
-        wikiAllArr[0] = newAuth;
+        wikiAllArr[1] = newAuth;
         let wikiAbSet = wikiAllArr.join("sh9{[");
         let wikiAbFin = sjcl.encrypt(key, wikiAbSet);
 
