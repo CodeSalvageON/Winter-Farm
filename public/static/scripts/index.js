@@ -533,6 +533,27 @@ pageNav.onclick = function () {
   }, 500);
 }
 
+
+// Admin Toolkit
+
+const adminChangeInput = document.getElementById("admin-change");
+const adminChangeBtn = document.getElementById("chagmin");
+
+const modChangeInput = document.getElementById("mod-change");
+const modChangeBtn = document.getElementById("chagmod");
+
+const urlChangeInput = document.getElementById("url-change");
+const urlChangePass = document.getElementById("url-change-pass");
+const urlChangeBtn = document.getElementById("chagurl");
+
+const pageDelNum = document.getElementById("page-del-num");
+const pageDelPass = document.getElementById("page-del-pass");
+const chagPag = document.getElementById("chagpag");
+
+adminChangeBtn.onclick = function () {
+  
+}
+
 // Mundane stuff below
 
 returnPageList.onclick = function () {

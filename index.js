@@ -586,6 +586,11 @@ app.post("/flag-wiki", async function (req, res) { // Flagging for the deletion 
 app.post("/get-all-pages", async function (req, res) { // Get all the pages of a wiki
   let wikiName = req.body.name;
 
+  if (wikiName === "" || wikiName === null || wikiName === undefined) {
+    res.send("404");
+    return false;
+  }
+
   let wikiPageBreak = await getAllPages(wikiName, true);
   setTimeout(function () {
     res.send(JSON.stringify(theUltimateArray));
@@ -697,6 +702,98 @@ app.post("/create-page", async function (req, res) { // Create a page within a w
             // do nothing
           }
         }
+      }
+    }
+  }, 500);
+});
+
+app.post("/change-admin", async function (req, res) { // Change Admin Password
+  let optionalAuth = req.body.auth;
+  let newAuth = req.body.new;
+  let wikiName = req.body.name;
+
+  // Below this line is an IP function which gets the IP for security.
+  
+  let ip = "";
+  let forwarded = req.headers['x-forwarded-for'];
+  
+  if (req.headers['x-forwarded-for']) {
+    ip = req.headers['x-forwarded-for'].split(",")[0];
+  } 
+
+  else if (req.connection && req.connection.remoteAddress) {
+    ip = req.connection.remoteAddress;
+  } 
+
+  else {
+    ip = req.ip;
+  }
+
+  if (wikiName === "" || wikiName === undefined || wikiName === null || newAuth === "" || newAuth === undefined || newAuth === null) {
+    res.send("404");
+    return false;
+  }
+
+  // Above this line is the IP function for security...
+
+  let theGetPass = await getAllPages(wikiName, false);
+  await getAllPages(wikiName, true);
+  await getAllPages(wikiName, "neither");
+
+  setTimeout(function () {
+    if (shambleTown === "invalid") {
+      res.send("invalid");
+    }
+
+    else {
+      let wikiPassResult = shambleTown[0];
+
+      if (optionalAuth === wikiPassResult) {
+        console.log("User with auth passed through.");
+
+        let wikiAllArr = shambleTown;
+        wikiAllArr[0] = newAuth;
+        let wikiAbSet = wikiAllArr.join("sh9{[");
+        let wikiAbFin = sjcl.encrypt(key, wikiAbSet);
+
+        let wikiSessionAll = marshLands;
+
+        if (wikiSessionAll === "invalidh8^!") { // Check if wiki doesn't exist
+          res.send("invalid");
+        }
+
+        else {
+          for (i = 0; i < wikiSessionAll.length; i++) {
+            if (wikiSessionAll[i].includes(wikiName + "")) {
+              let licketySplit = wikiSessionAll[i].split("h8^!");
+              let iWannaDecrypt = licketySplit[1];
+
+              licketySplit[1] = wikiAbFin;
+              let autoMech = licketySplit.join("h8^!");
+
+              wikiSessionAll[i] = autoMech;
+              let fixedWikiSession = wikiSessionAll.join("k89*");
+  
+              fs.writeFile(__dirname + "/db/wikis/store.txt", fixedWikiSession, err => {
+                if (err) {
+                  console.error(err);
+                }
+
+                else {
+                  res.send("edited");
+                }
+              });
+            }
+
+            else {
+              // do nothing
+            }
+          }
+        }
+      }
+
+      else {
+        
       }
     }
   }, 500);
