@@ -343,7 +343,7 @@ app.post("/edit-wiki", async function (req, res) { // Editing specific wiki page
   let wikiPageActual = parseInt(wikiPageNum);
   console.log("Wiki Page Actual: " + wikiPageNum);
 
-  if (wikiPageActual === NaN || wikiPageActual < 1) {
+  if (isNaN(wikiPageActual)|| wikiPageActual < 1) {
     wikiPageActual = 1;
     console.log("NaN or else");
   }
@@ -352,8 +352,6 @@ app.post("/edit-wiki", async function (req, res) { // Editing specific wiki page
     res.send("404");
     return false;
   }
-
-  wikiPageActual += 1;
 
   getPage(wikiPageActual, wikiEditName, true);
   let isValidPlace = checkInvalidChar(editPlace);
@@ -479,7 +477,7 @@ app.post("/flag-wiki", async function (req, res) { // Flagging for the deletion 
 
   let wikiPageActual = parseInt(wikiPageNum);
 
-  if (wikiPageActual === NaN || wikiPageActual < 1) {
+  if (isNaN(wikiPageActual) || wikiPageActual < 1) {
     wikiPageActual = 1;
   }
 
@@ -863,14 +861,14 @@ app.post("/change-mod", async function (req, res) { // Change Mod Password
   }, 500);
 });
 
-app.post("/change-bg", async function (req, res) { // Change Mod Password
+app.post("/change-bg", async function (req, res) { // Change Background URL
   let optionalAuth = req.body.auth;
   let newAuth = req.body.new;
   let wikiName = req.body.name;
 
   // Below this line is an IP function which gets the IP for security.
 
-  if (wikiName === "" || wikiName === undefined || wikiName === null || newAuth === "" || newAuth === undefined || newAuth === null) {
+  if (wikiName === "" || wikiName === undefined || wikiName === null || newAuth === "" || newAuth === undefined || newAuth === null || newAuth.length > 500) {
     res.send("404");
     return false;
   }
@@ -892,6 +890,99 @@ app.post("/change-bg", async function (req, res) { // Change Mod Password
 
       if (optionalAuth === wikiPassResult || optionalAuth === modPassResult) {
         console.log("User with auth passed through.");
+
+        let wikiAllArr = shambleTown;
+        wikiAllArr[3] = newAuth;
+        let wikiAbSet = wikiAllArr.join("sh9{[");
+        let wikiAbFin = sjcl.encrypt(key, wikiAbSet);
+
+        let wikiSessionAll = marshLands;
+
+        if (wikiSessionAll === "invalidh8^!") { // Check if wiki doesn't exist
+          res.send("invalid");
+        }
+
+        else {
+          for (i = 0; i < wikiSessionAll.length; i++) {
+            if (wikiSessionAll[i].includes(wikiName + "")) {
+              let licketySplit = wikiSessionAll[i].split("h8^!");
+              let iWannaDecrypt = licketySplit[1];
+
+              licketySplit[1] = wikiAbFin;
+              let autoMech = licketySplit.join("h8^!");
+
+              wikiSessionAll[i] = autoMech;
+              let fixedWikiSession = wikiSessionAll.join("k89*");
+  
+              fs.writeFile(__dirname + "/db/wikis/store.txt", fixedWikiSession, err => {
+                if (err) {
+                  console.error(err);
+                }
+
+                else {
+                  res.send("edited");
+                }
+              });
+            }
+
+            else {
+              // do nothing
+            }
+          }
+        }
+      }
+
+      else {
+        res.send("wrong");
+      }
+    }
+  }, 500);
+});
+
+app.post("/del-page", async function (req, res) { // Change Background URL
+  let optionalAuth = req.body.auth;
+  let newAuth = req.body.num;
+  let wikiName = req.body.name;
+
+  // Below this line is an IP function which gets the IP for security.
+
+  if (wikiName === "" || wikiName === undefined || wikiName === null || newAuth === "" || newAuth === undefined || newAuth === null) {
+    res.send("404");
+    return false;
+  }
+
+  if (isNan(parseInt(newAuth)) || parseInt(newAuth) < 1) {
+    newAuth = 1;
+  }
+
+  newAuth = parseInt(newAuth);
+
+  // Above this line is the IP function for security...
+
+  let theGetPass = await getAllPages(wikiName, false);
+  await getAllPages(wikiName, true);
+  await getAllPages(wikiName, "neither");
+
+  setTimeout(function () {
+    if (shambleTown === "invalid") {
+      res.send("invalid");
+    }
+
+    else {
+      let wikiPassResult = shambleTown[0];
+      let modPassResult = shambleTown[1];
+
+      if (optionalAuth === wikiPassResult || optionalAuth === modPassResult) {
+        console.log("User with auth passed through.");
+
+        let wikiPageArr = theUltimateArray;
+
+        if (wikiPageArr[newAuth - 1] === null || wikiPageArr[newAuth - 1] === "" || wikiPageArr[newAuth - 1] === undefined) {
+          return false;
+          res.send("invalid");
+        }
+        wikiPageArr.splice(newAuth - 1, 1);
+        let wikiFixedUp = wikiPageArr.join("0p1");
 
         let wikiAllArr = shambleTown;
         wikiAllArr[3] = newAuth;

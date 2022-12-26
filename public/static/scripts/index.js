@@ -633,7 +633,7 @@ modChangeBtn.onclick = function () {
       }
 
       else {
-        toolkitStatus.innerText = "Changed Admin Password.";
+        toolkitStatus.innerText = "Changed Mod Password.";
         modChangeInput.value = "";
         modChangePass.value = "";
       }
@@ -652,7 +652,7 @@ urlChangeBtn.onclick = function () {
   }
 
   else {
-    fetch ("/change-mod", {
+    fetch ("/change-url", {
       method : "POST", 
       headers : {
         "Content-Type" : "application/json" 
@@ -679,6 +679,51 @@ urlChangeBtn.onclick = function () {
 
       else {
         toolkitStatus.innerText = "Changed Admin Password.";
+        modChangeInput.value = "";
+        modChangePass.value = "";
+      }
+    })
+    .catch(error => {
+      throw error;
+    });
+  }
+}
+
+chagPag.onclick = function () {
+  toolkitStatus.innerText = "";
+  
+  if (pageDelPass.value === "" || pageDelPass.value === null || pageDelPass.value === undefined || pageDelNum.value === "" || pageDelNum.value === undefined || pageDelNum.value === null) {
+    toolkitStatus.innerText = "Error: One of your inputs is empty!";
+  }
+
+  else {
+    fetch ("/del-page", {
+      method : "POST", 
+      headers : {
+        "Content-Type" : "application/json" 
+      },
+      body : JSON.stringify({
+        auth : pageDelPass.value, 
+        new : pageDelNum.value, 
+        name : currentWiki
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      if (data === "invalid") {
+        toolkitStatus.innerText = "Error: Something went wrong...";
+      }
+
+      else if (data === "404") {
+        toolkitStatus.innerText = "Error: One of your inputs is empty! (Or page doesn't exist!)";
+      }
+
+      else if (data === "wrong") {
+        toolkitStatus.innerHTML = "Error: Wrong admin password.";
+      }
+
+      else {
+        toolkitStatus.innerText = "Deleted Page.";
         modChangeInput.value = "";
         modChangePass.value = "";
       }
