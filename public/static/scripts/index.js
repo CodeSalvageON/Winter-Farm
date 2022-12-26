@@ -301,7 +301,7 @@ wikiFlag.onclick = function () {
     }
 
     else if (data === "long") {
-      actualStatus.innerText = "Flagging can only be done every 10 minutes.";
+      actualStatus.innerText = "Flagging can only be done every 2 minutes.";
     }
 
     else if (data === "already") {
@@ -452,7 +452,7 @@ saveCreate.onclick = function () {
     }
 
     else if (data === "long") {
-      cpageStatus.innerText = "Without authorization, you can only create pages every 10 minutes with a limit of 500 characters.";
+      cpageStatus.innerText = "Without authorization, you can only create pages every 2 minutes with a limit of 500 characters.";
     }
 
     else {

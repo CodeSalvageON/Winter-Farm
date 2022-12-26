@@ -139,6 +139,7 @@ async function getAllPages (wikiName, scopeArr) {
       else {
         theUltimateArray = "invalid";
         shambleTown = "invalid";
+        marshLands = "invalid";
         return "invalidh8^!";
       }
     }
@@ -1032,6 +1033,49 @@ app.post("/del-page", async function (req, res) { // Change Background URL
   }, 500);
 });
 
+app.post("/get-all-wikis", async function (req, res) {
+  const wikiName = req.body.name;
+  let theUltList = [];
+  let campMaker = [];
+  
+  await getAllPages(wikiName, "neither");
+
+  setTimeout(function () {
+    if (marshLands === "invalid") {
+      res.send("invalid");
+    }
+
+    else {
+      campMaker = marshLands;
+
+      for (i = 0; i < campMaker.length; i++) {
+        let jakeFrost = campMaker[i].split("h8^!");
+        let sidedLine = jakeFrost[1];
+        let massDep = sjcl.decrypt(key, JSON.parse(jakeFrost[1]));
+
+        let crackHaus = massDep.split("sh9{[");
+        let mackTonight = crackHaus[2];
+
+        if (mackTonight === "public") {
+          theUltList.push(sidedLine);
+        }
+
+        else {
+          // Do nothing
+        }
+      }
+
+      for (i = 0; i < theUltList.length; i++) {
+        if (theUltList[i] === "" || theUltList[i] === undefined || theUltList[i] === null) {
+          theUltList.splice(i, 1);
+        }
+      }
+
+      res.send(JSON.stringify(theUltList));
+    }
+  }, 500);
+});
+
 // Security 
 
 let securityList = "";
@@ -1041,10 +1085,13 @@ let createList = "";
       
 setInterval(function () {
   securityList = "";
+}, 600000);
+
+setInterval(function () {
   editList = "";
   flagList = "";
   createList = "";
-}, 600000);
+}, 120000);
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
