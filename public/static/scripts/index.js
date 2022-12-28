@@ -704,7 +704,7 @@ chagPag.onclick = function () {
       },
       body : JSON.stringify({
         auth : pageDelPass.value, 
-        new : pageDelNum.value, 
+        num : parseInt(pageDelNum.value), 
         name : currentWiki
       })
     })
@@ -985,4 +985,105 @@ creationForm.onsubmit = function () {
   .catch(error => {
     throw error;
   });
+}
+
+fetch ("/get-all-wikis", {
+  method : "POST",
+  headers : {
+    "Content-Type" : "application/json"
+  },
+  body : JSON.stringify({
+    name : "Placeholder Wiki"
+  })
+})
+.then(response => response.text())
+.then(data => {
+  let kritiKA = JSON.parse(data).reverse();
+
+  for (i = 0; i < kritiKA.length; i++) {
+    document.getElementById("public-wiki-list").innerHTML += "<p>" + kritiKA[i] + "</p>";
+  }
+})
+.catch(error => {
+  throw error;
+});
+
+// URL Params
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+const wikiNameParg = urlParams.get('n');
+const wikiNumParg = urlParams.get('p');
+
+if (wikiNameParg === null) {
+  // Do nothing
+}
+
+else {
+  if (wikiNumParg === null) {
+    fetch ("/get-wiki", {
+      method : "POST", 
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        pageNum : 1, 
+        wikiName : wikiNameParg
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      wikiActual.innerHTML = data;
+
+      $("#wiki-create").slideUp();
+      $("#wiki-browse").slideUp();
+      $("#wiki-edit-place").slideUp();
+      $("#style-guide").slideUp();
+      $("#comp-page-list").slideUp();
+      $("#wiki-page-list").slideUp();
+      $("#wiki-admin-place").slideUp();
+      $("#info").slideUp();
+    
+      $("#wiki-stuff").slideDown();
+      currentPage = 1;
+      currentWiki = wikiNameParg;
+    })
+    .catch(error => {
+      throw error;
+    });
+  }
+
+  else {
+    fetch ("/get-wiki", {
+      method : "POST", 
+      headers : {
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify({
+        pageNum : wikiNumParg, 
+        wikiName : wikiNameParg
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      wikiActual.innerHTML = data;
+
+      $("#wiki-create").slideUp();
+      $("#wiki-browse").slideUp();
+      $("#wiki-edit-place").slideUp();
+      $("#style-guide").slideUp();
+      $("#comp-page-list").slideUp();
+      $("#wiki-page-list").slideUp();
+      $("#wiki-admin-place").slideUp();
+      $("#info").slideUp();
+    
+      $("#wiki-stuff").slideDown();
+      currentPage = wikiNumParg;
+      currentWiki = wikiNameParg;
+    })
+    .catch(error => {
+      throw error;
+    });
+  }
 }

@@ -1,0 +1,20 @@
+fetch ("/get-wiki", {
+    method : "POST", 
+    headers : {
+      "Content-Type" : "application/json"
+    },
+    body : JSON.stringify({
+      pageNum : String(pageNavNum.value), 
+      wikiName : currentWiki
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    wikiActual.innerHTML = data;
+
+    $("#comp-page-list").slideUp();
+    $("#wiki-stuff").slideDown();
+  })
+  .catch(error => {
+    throw error;
+  });

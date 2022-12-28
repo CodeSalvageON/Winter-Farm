@@ -940,7 +940,7 @@ app.post("/change-bg", async function (req, res) { // Change Background URL
   }, 500);
 });
 
-app.post("/del-page", async function (req, res) { // Change Background URL
+app.post("/del-page", async function (req, res) { // Delete pages
   let optionalAuth = req.body.auth;
   let newAuth = req.body.num;
   let wikiName = req.body.name;
@@ -949,14 +949,16 @@ app.post("/del-page", async function (req, res) { // Change Background URL
 
   if (wikiName === "" || wikiName === undefined || wikiName === null || newAuth === "" || newAuth === undefined || newAuth === null) {
     res.send("404");
+    console.log("This wiki doesn't exist!");
     return false;
   }
 
-  if (isNan(parseInt(newAuth)) || parseInt(newAuth) < 1) {
+  if (isNaN(parseInt(newAuth)) || parseInt(newAuth) < 1) {
     newAuth = 1;
   }
 
   newAuth = parseInt(newAuth);
+  console.log("New Auth: " + newAuth);
 
   // Above this line is the IP function for security...
 
@@ -967,6 +969,7 @@ app.post("/del-page", async function (req, res) { // Change Background URL
   setTimeout(function () {
     if (shambleTown === "invalid") {
       res.send("invalid");
+      console.log("what...");
     }
 
     else {
@@ -979,14 +982,15 @@ app.post("/del-page", async function (req, res) { // Change Background URL
         let wikiPageArr = theUltimateArray;
 
         if (wikiPageArr[newAuth - 1] === null || wikiPageArr[newAuth - 1] === "" || wikiPageArr[newAuth - 1] === undefined) {
+          res.send("404");
+          console.log("second 404");
           return false;
-          res.send("invalid");
         }
         wikiPageArr.splice(newAuth - 1, 1);
         let wikiFixedUp = wikiPageArr.join("0p1");
 
         let wikiAllArr = shambleTown;
-        wikiAllArr[3] = newAuth;
+        wikiAllArr[5] = wikiFixedUp;
         let wikiAbSet = wikiAllArr.join("sh9{[");
         let wikiAbFin = sjcl.encrypt(key, wikiAbSet);
 
@@ -1050,18 +1054,27 @@ app.post("/get-all-wikis", async function (req, res) {
 
       for (i = 0; i < campMaker.length; i++) {
         let jakeFrost = campMaker[i].split("h8^!");
+        console.log("ONE: " + campMaker[i]);
         let sidedLine = jakeFrost[1];
-        let massDep = sjcl.decrypt(key, JSON.parse(jakeFrost[1]));
+        console.log("TOM ANDERSON: " + sidedLine);
 
-        let crackHaus = massDep.split("sh9{[");
-        let mackTonight = crackHaus[2];
-
-        if (mackTonight === "public") {
-          theUltList.push(sidedLine);
+        if (sidedLine === "" || sidedLine === undefined || sidedLine === null) {
+          // Do nothing
         }
 
         else {
-          // Do nothing
+          let massDep = sjcl.decrypt(key, sidedLine);
+
+          let crackHaus = massDep.split("sh9{[");
+          let mackTonight = crackHaus[2];
+
+          if (mackTonight === "public") {
+            theUltList.push(jakeFrost[0]);
+          }
+
+          else {
+            // Do nothing
+          }
         }
       }
 
