@@ -317,7 +317,10 @@ app.post("/edit-wiki", async function (req, res) { // Editing specific wiki page
   console.log("Editing wiki..." + editPlace);
 
   let ip = "";
-  let forwarded = req.headers['x-forwarded-for']
+  let forwarded = req.headers['x-forwarded-for'];
+  
+  await getAllPages(wikiEditName, true);
+  await getAllPages(wikiEditName, "neither");
   
   if (req.headers['x-forwarded-for']) {
     ip = req.headers['x-forwarded-for'].split(",")[0];
@@ -332,8 +335,17 @@ app.post("/edit-wiki", async function (req, res) { // Editing specific wiki page
   }
 
   if (editList.includes(ip + "equo")) {
-    res.send("long");
-    return false;
+    let modPassResult = shambleTown[1];
+    let wikiPassResult = shambleTown[0];
+
+    if (wikiProt === modPassResult || wikiProt === wikiPassResult) {
+      // do nothing
+    }
+
+    else {
+      res.send("long");
+      return false;
+    }
   }
 
   else {
@@ -1087,6 +1099,58 @@ app.post("/get-all-wikis", async function (req, res) {
       res.send(JSON.stringify(theUltList));
     }
   }, 500);
+});
+
+app.post('/reset-edit-list', async function (req, res) {
+  const wikiName = req.body.name;
+  const wikiAuth = req.body.auth;
+
+  await getAllPages(wikiName, true);
+  await getAllPages(wikiName, "neither");
+
+  let ip = "";
+  let forwarded = req.headers['x-forwarded-for']
+  
+  if (req.headers['x-forwarded-for']) {
+    ip = req.headers['x-forwarded-for'].split(",")[0];
+  } 
+
+  else if (req.connection && req.connection.remoteAddress) {
+    ip = req.connection.remoteAddress;
+  } 
+
+  else {
+    ip = req.ip;
+  }
+
+  if (wikiAuth === null) {
+    res.send("invalid");
+  }
+
+  setTimeout(function () {
+    if (shambleTown === "invalid") {
+      res.send("invalid");
+    }
+
+    else {
+      let modPassResult = shambleTown[1];
+      let wikiPassResult = shambleTown[0];
+
+      if (wikiAuth === modPassResult || wikiAuth === wikiPassResult) {
+        if (editList.includes(String(ip) + "equo")) {
+          console.log(editList);
+          editList.replace(String(ip) + "equo", "");
+          console.log("Replacing...");
+        }
+
+        res.send("done");
+      }
+
+      else {
+        res.send("wrong")
+      }
+    }
+  }, 100);
 });
 
 // Security 

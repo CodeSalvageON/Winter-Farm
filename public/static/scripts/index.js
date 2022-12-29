@@ -210,6 +210,7 @@ wikiExit.onclick = function () {
 }
 
 const editStatus = document.getElementById("edit-status");
+const epageAuth = document.getElementById("epage-auth");
 
 wikiEdit.onclick = function () {
   switch (checkDisable) {
@@ -816,7 +817,8 @@ saveEdit.onclick = function () {
     body : JSON.stringify({
       name : currentWiki,
       num : String(currentPage),
-      place : editingArea.value
+      place : editingArea.value,
+      prot : epageAuth.value
     })
   })
   .then(response => response.text())
@@ -1001,7 +1003,8 @@ fetch ("/get-all-wikis", {
   let kritiKA = JSON.parse(data).reverse();
 
   for (i = 0; i < kritiKA.length; i++) {
-    document.getElementById("public-wiki-list").innerHTML += "<p>" + kritiKA[i] + "</p>";
+    let jumperRoper = "https://winterfarm.codesalvageon.repl.co?n=" + kritiKA[i].replace(" ", "+");
+    document.getElementById("public-wiki-list").innerHTML += "<p><a href='" + jumperRoper + "'>" + kritiKA[i] + "</a></p>";
   }
 })
 .catch(error => {
