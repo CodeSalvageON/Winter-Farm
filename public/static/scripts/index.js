@@ -1051,6 +1051,24 @@ else {
       $("#wiki-stuff").slideDown();
       currentPage = 1;
       currentWiki = wikiNameParg;
+
+      fetch ("/wiki-get-bg", {
+        method : "POST",
+        headers : {
+          "Content-Type" : "application/json"
+        },
+        body : JSON.stringify({
+          name : wikiNameParg
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        loadBack(data);
+        console.log(data);
+      })
+      .catch(error => {
+        throw error;
+      });
     })
     .catch(error => {
       throw error;
@@ -1084,6 +1102,24 @@ else {
       $("#wiki-stuff").slideDown();
       currentPage = wikiNumParg;
       currentWiki = wikiNameParg;
+
+      fetch ("/wiki-get-bg", {
+        method : "POST",
+        headers : {
+          "Content-Type" : "application/json"
+        },
+        body : JSON.stringify({
+          name : wikiNameParg
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        loadBack(data);
+        console.log(data);
+      })
+      .catch(error => {
+        throw error;
+      });
     })
     .catch(error => {
       throw error;

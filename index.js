@@ -1,5 +1,9 @@
 const fs = require('fs');
 const express = require('express');
+const sanitizeHtml = require('sanitize-html');
+
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
 
 const app = require('express')();
 const http = require('http').Server(app);
@@ -310,10 +314,13 @@ let shambleTown = [];
 let marshLands = [];
 
 app.post("/edit-wiki", async function (req, res) { // Editing specific wiki pages
+  const window = new JSDOM('').window;
+  const purify = DOMPurify(window);
+  
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
   const wikiPageNum = req.body.num;
-  const editPlace = String(sanitizer.sanitize(req.body.place));
+  const editPlace = String(purify.sanitize(req.body.place));
   console.log("Editing wiki..." + editPlace);
 
   let ip = "";
@@ -1150,6 +1157,17 @@ app.post('/reset-edit-list', async function (req, res) {
         res.send("wrong")
       }
     }
+  }, 100);
+});
+
+app.post("/wiki-get-bg", async function (req, res) {
+  const wikiName = req.body.name;
+
+  await getAllPages(wikiName, false);
+
+  setTimeout(function () {
+    let ikH = shambleTown;
+    res.send(ikH[3]);
   }, 100);
 });
 
