@@ -1,9 +1,5 @@
 const fs = require('fs');
-const express = require('express');
-const sanitizeHtml = require('sanitize-html');
-
-const createDOMPurify = require('dompurify');
-const { JSDOM } = require('jsdom');
+const express = require('express')
 
 const app = require('express')();
 const http = require('http').Server(app);
@@ -14,6 +10,27 @@ const io = require('socket.io')(http);
 const sjcl = require('sjcl');
 const escapeHtml = require('escape-html');
 const sanitizer = require('sanitizer');
+
+const xss = require("xss");
+const options = {
+  whiteList : {
+    a : ["href", "title", "target"],
+    p : ["class"],
+    h1 : ["class"],
+    h2 : ["class"],
+    h3 : ["class"],
+    h4 : ["class"],
+    h5 : ["class"],
+    img : ["src", "width", "height"],
+    br : ["class"],
+    hr : ["class"],
+    i : ["class"],
+    b : ["class"],
+    strong : ["class"],
+    div : ["class"],
+    section : ["class"]
+  }
+}
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -314,13 +331,10 @@ let shambleTown = [];
 let marshLands = [];
 
 app.post("/edit-wiki", async function (req, res) { // Editing specific wiki pages
-  const window = new JSDOM('').window;
-  const purify = DOMPurify(window);
-  
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
-  const wikiPageNum = req.body.num;
-  const editPlace = String(purify.sanitize(req.body.place));
+  const wikiPageNum = req.bodym;
+  const editPlace = String(xss(req.body.place, options));
   console.log("Editing wiki..." + editPlace);
 
   let ip = "";

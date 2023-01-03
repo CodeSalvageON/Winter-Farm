@@ -12,13 +12,16 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "claudia-bot-builder": "^4.5.0",
+    "dompurify": "^2.4.1",
     "escape-html": "^1.0.3",
     "express": "^4.17.1",
     "firebase-admin": "^9.4.2",
+    "jsdom": "^20.0.3",
     "sanitize-html": "^2.8.1",
     "sanitizer": "^0.1.3",
     "simple-encryptor": "^4.0.0",
     "sjcl": "^1.0.8",
-    "socket.io": "^3.0.4"
+    "socket.io": "^3.0.4",
+    "xss": "^1.0.14"
   }
 }
