@@ -21,7 +21,7 @@ const options = {
     h3 : ["class"],
     h4 : ["class"],
     h5 : ["class"],
-    img : ["src", "width", "height"],
+    img : ["src", "width", "height", "class"],
     br : ["class"],
     hr : ["class"],
     i : ["class"],
@@ -333,7 +333,7 @@ let marshLands = [];
 app.post("/edit-wiki", async function (req, res) { // Editing specific wiki pages
   const wikiEditName = req.body.name;
   const wikiProt = req.body.prot;
-  const wikiPageNum = req.bodym;
+  const wikiPageNum = req.body.pageNum;
   const editPlace = String(xss(req.body.place, options));
   console.log("Editing wiki..." + editPlace);
 
